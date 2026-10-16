@@ -1,0 +1,164 @@
+{
+  "$defs": {
+    "ComputeCeiling": {
+      "additionalProperties": false,
+      "properties": {
+        "empirical_tflops": {
+          "exclusiveMinimum": 0,
+          "title": "Empirical Tflops",
+          "type": "number"
+        },
+        "method_id": {
+          "title": "Method Id",
+          "type": "string"
+        },
+        "precision": {
+          "title": "Precision",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceProvenance"
+        }
+      },
+      "required": [
+        "precision",
+        "empirical_tflops",
+        "method_id",
+        "provenance"
+      ],
+      "title": "ComputeCeiling",
+      "type": "object"
+    },
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "SourceProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "evidence_class": {
+          "enum": [
+            "authoritative",
+            "measured",
+            "synthetic",
+            "declared"
+          ],
+          "title": "Evidence Class",
+          "type": "string"
+        },
+        "retrieved_at_utc": {
+          "format": "date-time",
+          "title": "Retrieved At Utc",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "source_uri": {
+          "title": "Source Uri",
+          "type": "string"
+        },
+        "usage_note": {
+          "title": "Usage Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_uri",
+        "revision",
+        "digest",
+        "evidence_class",
+        "retrieved_at_utc",
+        "usage_note"
+      ],
+      "title": "SourceProvenance",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "compute_ceilings": {
+      "items": {
+        "$ref": "#/$defs/ComputeCeiling"
+      },
+      "title": "Compute Ceilings",
+      "type": "array"
+    },
+    "device_memory_bytes": {
+      "exclusiveMinimum": 0,
+      "title": "Device Memory Bytes",
+      "type": "integer"
+    },
+    "devices_per_node": {
+      "exclusiveMinimum": 0,
+      "title": "Devices Per Node",
+      "type": "integer"
+    },
+    "empirical_hbm_bandwidth_gbps": {
+      "exclusiveMinimum": 0,
+      "title": "Empirical Hbm Bandwidth Gbps",
+      "type": "number"
+    },
+    "hardware_id": {
+      "title": "Hardware Id",
+      "type": "string"
+    },
+    "hbm_method_id": {
+      "title": "Hbm Method Id",
+      "type": "string"
+    },
+    "interconnect": {
+      "title": "Interconnect",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/SourceProvenance"
+    },
+    "revision": {
+      "title": "Revision",
+      "type": "string"
+    },
+    "supported_tensor_parallel_sizes": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Supported Tensor Parallel Sizes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "hardware_id",
+    "revision",
+    "device_memory_bytes",
+    "empirical_hbm_bandwidth_gbps",
+    "hbm_method_id",
+    "compute_ceilings",
+    "supported_tensor_parallel_sizes",
+    "devices_per_node",
+    "interconnect",
+    "provenance"
+  ],
+  "title": "HardwareSpec",
+  "type": "object"
+}

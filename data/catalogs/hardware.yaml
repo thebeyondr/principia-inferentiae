@@ -1,0 +1,35 @@
+schema_version: "1.0.0"
+catalog_revision: fixture-1
+catalog_digest_semantics: Entry provenance digest identifies the declared synthetic fixture, not vendor documentation or measured hardware.
+entries:
+  - hardware_id: synthetic-80gb
+    revision: fixture-1
+    device_memory_bytes: 85899345920
+    empirical_hbm_bandwidth_gbps: 1000
+    hbm_method_id: synthetic-roofline-fixture
+    compute_ceilings:
+      - precision: bf16
+        empirical_tflops: 100
+        method_id: synthetic-roofline-fixture
+        provenance:
+          source_uri: fixture://principia/synthetic-80gb/bf16
+          revision: fixture-1
+          digest:
+            algorithm: sha256
+            value: "3333333333333333333333333333333333333333333333333333333333333333"
+          evidence_class: synthetic
+          retrieved_at_utc: "2026-10-16T00:00:00Z"
+          usage_note: Synthetic empirical ceiling used only to exercise classification tests.
+    supported_tensor_parallel_sizes: [1, 2, 4, 8]
+    devices_per_node: 8
+    interconnect: synthetic full mesh
+    provenance:
+      source_uri: fixture://principia/synthetic-80gb
+      revision: fixture-1
+      digest:
+        algorithm: sha256
+        value: "4444444444444444444444444444444444444444444444444444444444444444"
+      evidence_class: synthetic
+      retrieved_at_utc: "2026-10-16T00:00:00Z"
+      usage_note: All capacity, bandwidth, compute, topology, and interconnect values are synthetic.
+

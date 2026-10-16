@@ -1,0 +1,13 @@
+{"request_id":"burst-a-01","arrival_time_ms":0,"completed_time_ms":42000,"prompt_tokens":20000,"output_tokens":512,"tenant_id":"tenant-a","prefix_key":"manual-v1","shared_prefix_tokens":2048}
+{"request_id":"burst-a-02","arrival_time_ms":40,"completed_time_ms":42100,"prompt_tokens":19800,"output_tokens":384,"tenant_id":"tenant-a","prefix_key":"manual-v1","shared_prefix_tokens":2048}
+{"request_id":"burst-a-03","arrival_time_ms":80,"completed_time_ms":42300,"prompt_tokens":19500,"output_tokens":256,"tenant_id":"tenant-b","prefix_key":"manual-v1","shared_prefix_tokens":2048}
+{"request_id":"burst-a-04","arrival_time_ms":120,"completed_time_ms":42500,"prompt_tokens":18000,"output_tokens":512,"tenant_id":"tenant-b","prefix_key":"policy-v3","shared_prefix_tokens":1024}
+{"request_id":"burst-a-05","arrival_time_ms":160,"completed_time_ms":42700,"prompt_tokens":17000,"output_tokens":128,"tenant_id":"tenant-c","prefix_key":null,"shared_prefix_tokens":0}
+{"request_id":"burst-a-06","arrival_time_ms":200,"completed_time_ms":42900,"prompt_tokens":16000,"output_tokens":256,"tenant_id":"tenant-c","prefix_key":"policy-v3","shared_prefix_tokens":1024}
+{"request_id":"burst-b-01","arrival_time_ms":5000,"completed_time_ms":46800,"prompt_tokens":20000,"output_tokens":512,"tenant_id":"tenant-a","prefix_key":"manual-v1","shared_prefix_tokens":2048}
+{"request_id":"burst-b-02","arrival_time_ms":5050,"completed_time_ms":46950,"prompt_tokens":19000,"output_tokens":384,"tenant_id":"tenant-b","prefix_key":"manual-v1","shared_prefix_tokens":2048}
+{"request_id":"burst-b-03","arrival_time_ms":5100,"completed_time_ms":47100,"prompt_tokens":18500,"output_tokens":256,"tenant_id":"tenant-c","prefix_key":null,"shared_prefix_tokens":0}
+{"request_id":"burst-b-04","arrival_time_ms":5150,"completed_time_ms":47300,"prompt_tokens":17500,"output_tokens":128,"tenant_id":"tenant-a","prefix_key":"policy-v3","shared_prefix_tokens":1024}
+{"request_id":"steady-01","arrival_time_ms":10000,"completed_time_ms":51500,"prompt_tokens":15000,"output_tokens":256,"tenant_id":"tenant-b","prefix_key":null,"shared_prefix_tokens":0}
+{"request_id":"steady-02","arrival_time_ms":15000,"completed_time_ms":56500,"prompt_tokens":20000,"output_tokens":512,"tenant_id":"tenant-c","prefix_key":"manual-v1","shared_prefix_tokens":2048}
+

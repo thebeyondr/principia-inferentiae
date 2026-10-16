@@ -1,0 +1,519 @@
+{
+  "benchmark_plan": {
+    "command_template": "vllm bench serve --backend vllm --model ${PINNED_MODEL_PATH} --dataset-name timed_trace --dataset-path ${VLLM_TIMED_TRACE_PATH} --num-prompts 12 --self-timed --timed-trace-sec-multiplier ${TIME_MULTIPLIER} --timed-trace-chunk-hash-size 512 --max-concurrency 8 --seed 20261016",
+    "equivalence_requirements": [
+      "Pin model artifact digest, runtime revision, precision, flags, and topology.",
+      "Replay the canonical workload distribution and arrival shape.",
+      "Scale offered load only through a recorded timed-trace multiplier.",
+      "Record warmup, trial count, dispersion, failures, and raw artifact digest.",
+      "State inference-only versus end-to-end metric boundaries."
+    ],
+    "load_points_rps": [
+      3.0,
+      4.5,
+      6.0,
+      7.5
+    ],
+    "plan_id": "benchmark.66025a84cb8e.064c645e2eb1",
+    "required_config_hash": "064c645e2eb16c2b8eef0d307d07f12d65d80900775272d02f481d5bf53121f3",
+    "required_metrics": [
+      "ttft_ms_p99",
+      "itl_ms_p99",
+      "tpot_ms_p99",
+      "e2e_ms_p99",
+      "per_user_tps",
+      "aggregate_tps",
+      "achieved_goodput_rps",
+      "goodput_fraction"
+    ],
+    "required_workload_hash": "66025a84cb8ee1536330fa6fe1f74a77b4d3eb97cf641a476a1dfc37c7af170a",
+    "status": "required"
+  },
+  "claims": [
+    {
+      "assumptions": [
+        "Nearest-rank percentiles are computed over the supplied observation window.",
+        "One-second arrival buckets are aligned to the first observed arrival."
+      ],
+      "claim_id": "workload.characterization",
+      "claim_type": "workload_characterization",
+      "confidence": "high",
+      "contrary_evidence_ids": [],
+      "evidence_ids": [
+        "workload.trace",
+        "workload.slo"
+      ],
+      "limitations": [
+        "The trace describes the supplied window, not future demand."
+      ],
+      "method_id": "workload-characterization/1.0.0",
+      "missing_telemetry": [],
+      "next_discriminating_experiment": null,
+      "statement": "Observed 12 requests; prompt p99=20000 tokens, output p99=512 tokens, and peak one-second arrival rate=6.000 requests/s.",
+      "status": "supported",
+      "supporting_evidence_ids": [
+        "workload.trace",
+        "workload.slo"
+      ],
+      "units": [
+        {
+          "field": "prompt_tokens.p99",
+          "unit": "tokens"
+        },
+        {
+          "field": "output_tokens.p99",
+          "unit": "tokens"
+        },
+        {
+          "field": "peak_one_second_arrival_rps",
+          "unit": "requests/s"
+        },
+        {
+          "field": "shared_prefix_tokens.p99",
+          "unit": "tokens"
+        }
+      ]
+    },
+    {
+      "assumptions": [
+        "Capacity uses configured maximum concurrent sequences and sequence length.",
+        "The result is a maximum-rank estimate; aggregate capacity is only a lower bound.",
+        "HBM capacity fit is separate from HBM bandwidth and compute throughput.",
+        "Pipeline stages are approximated as equal partitions plus declared imbalance."
+      ],
+      "claim_id": "memory.per_rank_fit",
+      "claim_type": "memory_capacity_fit",
+      "confidence": "low",
+      "contrary_evidence_ids": [],
+      "evidence_ids": [
+        "memory.model",
+        "memory.hardware",
+        "memory.serving_config",
+        "memory.estimate"
+      ],
+      "limitations": [
+        "This static estimate does not establish allocatability or SLO-goodput.",
+        "Runtime reserve accuracy depends on the supplied measured or declared reserve."
+      ],
+      "method_id": "memory-capacity/1.0.0",
+      "missing_telemetry": [],
+      "next_discriminating_experiment": "Run the pinned serving benchmark and record peak allocated HBM per rank.",
+      "statement": "Configured replica fits per rank: 29963660452 required bytes versus 77309411328 usable bytes; aggregate capacity lower bound is 1 GPU(s).",
+      "status": "supported",
+      "supporting_evidence_ids": [
+        "memory.model",
+        "memory.hardware",
+        "memory.serving_config",
+        "memory.estimate"
+      ],
+      "units": [
+        {
+          "field": "required_per_rank_bytes",
+          "unit": "bytes/rank"
+        },
+        {
+          "field": "usable_device_bytes",
+          "unit": "bytes/device"
+        },
+        {
+          "field": "kv_bytes_per_token_logical",
+          "unit": "bytes/token"
+        }
+      ]
+    },
+    {
+      "assumptions": [
+        "Roofline classification is valid only for a measured kernel or defined phase.",
+        "Generic GPU utilization is not evidence of compute saturation."
+      ],
+      "claim_id": "roofline.classification",
+      "claim_type": "kernel_or_phase_roofline",
+      "confidence": "none",
+      "contrary_evidence_ids": [],
+      "evidence_ids": [
+        "roofline.measurement",
+        "roofline.hardware"
+      ],
+      "limitations": [
+        "HBM capacity pressure, if known, is reported separately and cannot select a roofline class."
+      ],
+      "method_id": "empirical-roofline/1.0.0",
+      "missing_telemetry": [
+        "measured FLOPs",
+        "measured HBM bytes",
+        "measured duration",
+        "raw artifact"
+      ],
+      "next_discriminating_experiment": "Profile the named kernel or phase and record FLOPs, HBM bytes moved, duration, precision, and the raw-artifact digest.",
+      "statement": "No roofline bottleneck classification is supported by the supplied evidence.",
+      "status": "insufficient_evidence",
+      "supporting_evidence_ids": [],
+      "units": [
+        {
+          "field": "arithmetic_intensity",
+          "unit": "FLOP/byte"
+        },
+        {
+          "field": "achieved_compute",
+          "unit": "TFLOP/s"
+        },
+        {
+          "field": "achieved_hbm_bandwidth",
+          "unit": "GB/s"
+        }
+      ]
+    },
+    {
+      "assumptions": [
+        "Each service-curve point represents one replica at the declared TP/PP topology.",
+        "Replica capacity scales linearly only after identical replicas are measured.",
+        "Failure and rollout reserves are additive and unavailable to steady-state load."
+      ],
+      "claim_id": "deployment.recommendation",
+      "claim_type": "deployment_sizing",
+      "confidence": "high",
+      "contrary_evidence_ids": [],
+      "evidence_ids": [
+        "sizing.workload",
+        "sizing.memory",
+        "sizing.config",
+        "sizing.quality_gate"
+      ],
+      "limitations": [
+        "A serving configuration that rejects the observed tokens or concurrency cannot be sized."
+      ],
+      "method_id": "deployment-sizing/1.0.0",
+      "missing_telemetry": [
+        "configured max sequence and concurrency cover the observed p99 and peak concurrency"
+      ],
+      "next_discriminating_experiment": "Execute the generated benchmark plan and ingest the complete measured service curve.",
+      "statement": "No deployment is recommended because the configured sequence or concurrency limit is below the observed workload.",
+      "status": "insufficient_evidence",
+      "supporting_evidence_ids": [
+        "sizing.workload",
+        "sizing.memory",
+        "sizing.config",
+        "sizing.quality_gate"
+      ],
+      "units": [
+        {
+          "field": "memory_fit_lower_bound_gpus",
+          "unit": "GPU"
+        },
+        {
+          "field": "recommended_gpu_count",
+          "unit": "GPU"
+        },
+        {
+          "field": "required_peak_rps_with_headroom",
+          "unit": "requests/s"
+        },
+        {
+          "field": "max_slo_goodput_rps_per_replica",
+          "unit": "good requests/s/replica"
+        }
+      ]
+    }
+  ],
+  "diagnosis": null,
+  "evidence": [
+    {
+      "description": "Canonicalized request trace",
+      "event_type": null,
+      "evidence_id": "workload.trace",
+      "kind": "input",
+      "observed_value": "c8687dafe057c1593fae99e1ee321e0bcd9f3465b8bc45d8580ae0e71daf9337",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "c8687dafe057c1593fae99e1ee321e0bcd9f3465b8bc45d8580ae0e71daf9337"
+      },
+      "timestamp_ms": null,
+      "unit": "sha256"
+    },
+    {
+      "description": "Validated serving SLO contract",
+      "event_type": null,
+      "evidence_id": "workload.slo",
+      "kind": "configuration",
+      "observed_value": "c9b315d00c05584c3dba40d369b72ca86eb60ae2be3d405b4e613eda99469e83",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "c9b315d00c05584c3dba40d369b72ca86eb60ae2be3d405b4e613eda99469e83"
+      },
+      "timestamp_ms": null,
+      "unit": "sha256"
+    },
+    {
+      "description": "Validated model architecture and precision contract",
+      "event_type": null,
+      "evidence_id": "memory.model",
+      "kind": "input",
+      "observed_value": "26d766c6203c9840f24ef42cb03b657664b1a0419876d73f7c6f65c1c79c9822",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "26d766c6203c9840f24ef42cb03b657664b1a0419876d73f7c6f65c1c79c9822"
+      },
+      "timestamp_ms": null,
+      "unit": "sha256"
+    },
+    {
+      "description": "Validated hardware capacity contract",
+      "event_type": null,
+      "evidence_id": "memory.hardware",
+      "kind": "input",
+      "observed_value": "50b54d17da683f9014b199539859e0a91459d97c6a4199f87cc2bf0481a5f327",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "50b54d17da683f9014b199539859e0a91459d97c6a4199f87cc2bf0481a5f327"
+      },
+      "timestamp_ms": null,
+      "unit": "sha256"
+    },
+    {
+      "description": "Validated serving and sharding configuration",
+      "event_type": null,
+      "evidence_id": "memory.serving_config",
+      "kind": "configuration",
+      "observed_value": "064c645e2eb16c2b8eef0d307d07f12d65d80900775272d02f481d5bf53121f3",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "064c645e2eb16c2b8eef0d307d07f12d65d80900775272d02f481d5bf53121f3"
+      },
+      "timestamp_ms": null,
+      "unit": "sha256"
+    },
+    {
+      "description": "Deterministic maximum-rank capacity estimate",
+      "event_type": null,
+      "evidence_id": "memory.estimate",
+      "kind": "estimate",
+      "observed_value": "29963660452",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "485fff4692757383b04c55e7282206e99bbf38680dcbc05023b4790bc5d0a14c"
+      },
+      "timestamp_ms": null,
+      "unit": "bytes/rank"
+    },
+    {
+      "description": "Roofline measurement contract",
+      "event_type": null,
+      "evidence_id": "roofline.measurement",
+      "kind": "input",
+      "observed_value": "bca86f9c2f3889d562ca92c9cd7b0c8badc411887d28d28b539028ffb85b5759",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "bca86f9c2f3889d562ca92c9cd7b0c8badc411887d28d28b539028ffb85b5759"
+      },
+      "timestamp_ms": null,
+      "unit": "sha256"
+    },
+    {
+      "description": "Empirical hardware ceiling contract",
+      "event_type": null,
+      "evidence_id": "roofline.hardware",
+      "kind": "input",
+      "observed_value": "50b54d17da683f9014b199539859e0a91459d97c6a4199f87cc2bf0481a5f327",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "50b54d17da683f9014b199539859e0a91459d97c6a4199f87cc2bf0481a5f327"
+      },
+      "timestamp_ms": null,
+      "unit": "sha256"
+    },
+    {
+      "description": "Canonical workload profile and SLO",
+      "event_type": null,
+      "evidence_id": "sizing.workload",
+      "kind": "input",
+      "observed_value": "66025a84cb8ee1536330fa6fe1f74a77b4d3eb97cf641a476a1dfc37c7af170a",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "1d5c1b7a5b0e345a382fc33f6d5404c75cd46d5257296cd5bd9ab20d42a0848d"
+      },
+      "timestamp_ms": null,
+      "unit": "sha256"
+    },
+    {
+      "description": "Per-rank memory-fit estimate",
+      "event_type": null,
+      "evidence_id": "sizing.memory",
+      "kind": "estimate",
+      "observed_value": "29963660452",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "485fff4692757383b04c55e7282206e99bbf38680dcbc05023b4790bc5d0a14c"
+      },
+      "timestamp_ms": null,
+      "unit": "bytes/rank"
+    },
+    {
+      "description": "Serving configuration identity",
+      "event_type": null,
+      "evidence_id": "sizing.config",
+      "kind": "configuration",
+      "observed_value": "064c645e2eb16c2b8eef0d307d07f12d65d80900775272d02f481d5bf53121f3",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "064c645e2eb16c2b8eef0d307d07f12d65d80900775272d02f481d5bf53121f3"
+      },
+      "timestamp_ms": null,
+      "unit": "sha256"
+    },
+    {
+      "description": "Independent model/precision quality-selection result",
+      "event_type": null,
+      "evidence_id": "sizing.quality_gate",
+      "kind": "artifact",
+      "observed_value": "true",
+      "source_digest": {
+        "algorithm": "sha256",
+        "value": "7777777777777777777777777777777777777777777777777777777777777777"
+      },
+      "timestamp_ms": null,
+      "unit": "boolean"
+    }
+  ],
+  "memory": {
+    "active_tokens_configured": 164096,
+    "aggregate_capacity_lower_bound_gpus": 1,
+    "assumptions": [
+      "Capacity uses configured maximum concurrent sequences and sequence length.",
+      "The result is a maximum-rank estimate; aggregate capacity is only a lower bound.",
+      "HBM capacity fit is separate from HBM bandwidth and compute throughput.",
+      "Pipeline stages are approximated as equal partitions plus declared imbalance."
+    ],
+    "config_hash": "064c645e2eb16c2b8eef0d307d07f12d65d80900775272d02f481d5bf53121f3",
+    "fits_per_rank": true,
+    "fragmentation_reserve_per_rank_bytes": 2219530404,
+    "hardware_digest": {
+      "algorithm": "sha256",
+      "value": "50b54d17da683f9014b199539859e0a91459d97c6a4199f87cc2bf0481a5f327"
+    },
+    "headroom_per_rank_bytes": 47345750876,
+    "kv_bytes_per_token_logical": 131072,
+    "kv_bytes_per_token_per_rank": 65536,
+    "kv_cache_per_rank_bytes": 10754195456,
+    "model_digest": {
+      "algorithm": "sha256",
+      "value": "26d766c6203c9840f24ef42cb03b657664b1a0419876d73f7c6f65c1c79c9822"
+    },
+    "quantization_metadata_total_bytes": 0,
+    "required_per_rank_bytes": 29963660452,
+    "runtime_reserve_per_rank_bytes": 8589934592,
+    "status": "supported",
+    "usable_device_bytes": 77309411328,
+    "weights_per_rank_bytes": 8400000000,
+    "weights_total_bytes": 16000000000
+  },
+  "profile": {
+    "burstiness_peak_to_mean": 7.5005,
+    "mean_arrival_rps": 0.799947,
+    "missing_telemetry": [],
+    "observation_window_ms": 15001,
+    "output_tokens": {
+      "p50": 256.0,
+      "p95": 512.0,
+      "p99": 512.0
+    },
+    "peak_observed_concurrency": 12,
+    "peak_one_second_arrival_rps": 6.0,
+    "prefix_reuse_fraction": 0.583333,
+    "prompt_tokens": {
+      "p50": 18500.0,
+      "p95": 20000.0,
+      "p99": 20000.0
+    },
+    "request_count": 12,
+    "shared_prefix_tokens": {
+      "p50": 1024.0,
+      "p95": 2048.0,
+      "p99": 2048.0
+    },
+    "slo": {
+      "max_e2e_ms_p99": 50000.0,
+      "max_itl_ms_p99": 80.0,
+      "max_tpot_ms_p99": 80.0,
+      "max_ttft_ms_p99": 3000.0,
+      "metric_scope": "end_to_end",
+      "min_aggregate_tps": 100.0,
+      "min_goodput_fraction": 0.95,
+      "min_per_user_tps": 12.5,
+      "queue_boundary": "client send through final response byte, including queue and network"
+    },
+    "tenant_count": 3,
+    "total_tokens": {
+      "p50": 18756.0,
+      "p95": 20512.0,
+      "p99": 20512.0
+    },
+    "trace_digest": {
+      "algorithm": "sha256",
+      "value": "c8687dafe057c1593fae99e1ee321e0bcd9f3465b8bc45d8580ae0e71daf9337"
+    },
+    "workload_hash": "66025a84cb8ee1536330fa6fe1f74a77b4d3eb97cf641a476a1dfc37c7af170a"
+  },
+  "roofline": {
+    "achieved_hbm_bandwidth_gbps": null,
+    "achieved_tflops": null,
+    "arithmetic_intensity_flops_per_byte": null,
+    "assumptions": [
+      "Roofline classification is valid only for a measured kernel or defined phase.",
+      "Generic GPU utilization is not evidence of compute saturation."
+    ],
+    "capacity_pressure_fraction": null,
+    "classification": "insufficient_evidence",
+    "machine_balance_flops_per_byte": null,
+    "roofline_ceiling_tflops": null,
+    "roofline_efficiency_fraction": null,
+    "status": "insufficient_evidence"
+  },
+  "run": {
+    "assumptions": [
+      "All model and hardware values are synthetic teaching fixtures.",
+      "Static capacity math is R1 evidence and not a serving benchmark."
+    ],
+    "code_revision": "unpublished-first-pass",
+    "created_at_utc": "2026-10-16T15:12:00-05:00",
+    "input_digests": [
+      {
+        "algorithm": "sha256",
+        "value": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      {
+        "algorithm": "sha256",
+        "value": "4444444444444444444444444444444444444444444444444444444444444444"
+      }
+    ],
+    "limitations": [
+      "No GPU service curve or profiler artifact exists.",
+      "Code revision is an explicit unpublished label because this directory is not a Git repository."
+    ],
+    "method_revision": "principia-methods/1.0.0",
+    "package_version": "0.1.0",
+    "random_seed": 20261016,
+    "reproducibility_tier": "R1",
+    "run_id": "long-context-bursty-static-r1",
+    "schema_version": "1.0.0"
+  },
+  "sizing": {
+    "active_replicas": null,
+    "assumptions": [
+      "Each service-curve point represents one replica at the declared TP/PP topology.",
+      "Replica capacity scales linearly only after identical replicas are measured.",
+      "Failure and rollout reserves are additive and unavailable to steady-state load."
+    ],
+    "gpus_per_replica": 2,
+    "limitations": [
+      "A serving configuration that rejects the observed tokens or concurrency cannot be sized."
+    ],
+    "matched_service_curve_id": null,
+    "max_slo_goodput_rps_per_replica": null,
+    "memory_fit_lower_bound_gpus": 1,
+    "quality_gate_evaluation_id": "synthetic-contract-path-only",
+    "recommended_gpu_count": null,
+    "required_peak_rps_with_headroom": 8.0,
+    "status": "insufficient_evidence",
+    "total_replicas_with_reserve": null
+  }
+}

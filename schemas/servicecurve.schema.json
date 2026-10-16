@@ -1,0 +1,212 @@
+{
+  "$defs": {
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "ServiceCurvePoint": {
+      "additionalProperties": false,
+      "properties": {
+        "achieved_goodput_rps": {
+          "minimum": 0,
+          "title": "Achieved Goodput Rps",
+          "type": "number"
+        },
+        "aggregate_tps": {
+          "minimum": 0,
+          "title": "Aggregate Tps",
+          "type": "number"
+        },
+        "concurrency": {
+          "exclusiveMinimum": 0,
+          "title": "Concurrency",
+          "type": "integer"
+        },
+        "dispersion_method": {
+          "minLength": 1,
+          "title": "Dispersion Method",
+          "type": "string"
+        },
+        "e2e_ms_p99": {
+          "exclusiveMinimum": 0,
+          "title": "E2E Ms P99",
+          "type": "number"
+        },
+        "goodput_fraction": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Goodput Fraction",
+          "type": "number"
+        },
+        "itl_ms_p99": {
+          "exclusiveMinimum": 0,
+          "title": "Itl Ms P99",
+          "type": "number"
+        },
+        "offered_rps": {
+          "exclusiveMinimum": 0,
+          "title": "Offered Rps",
+          "type": "number"
+        },
+        "per_user_tps": {
+          "minimum": 0,
+          "title": "Per User Tps",
+          "type": "number"
+        },
+        "tpot_ms_p99": {
+          "exclusiveMinimum": 0,
+          "title": "Tpot Ms P99",
+          "type": "number"
+        },
+        "trial_count": {
+          "minimum": 3,
+          "title": "Trial Count",
+          "type": "integer"
+        },
+        "ttft_ms_p99": {
+          "exclusiveMinimum": 0,
+          "title": "Ttft Ms P99",
+          "type": "number"
+        }
+      },
+      "required": [
+        "offered_rps",
+        "concurrency",
+        "achieved_goodput_rps",
+        "ttft_ms_p99",
+        "itl_ms_p99",
+        "tpot_ms_p99",
+        "e2e_ms_p99",
+        "per_user_tps",
+        "aggregate_tps",
+        "goodput_fraction",
+        "trial_count",
+        "dispersion_method"
+      ],
+      "title": "ServiceCurvePoint",
+      "type": "object"
+    },
+    "SourceProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "evidence_class": {
+          "enum": [
+            "authoritative",
+            "measured",
+            "synthetic",
+            "declared"
+          ],
+          "title": "Evidence Class",
+          "type": "string"
+        },
+        "retrieved_at_utc": {
+          "format": "date-time",
+          "title": "Retrieved At Utc",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "source_uri": {
+          "title": "Source Uri",
+          "type": "string"
+        },
+        "usage_note": {
+          "title": "Usage Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_uri",
+        "revision",
+        "digest",
+        "evidence_class",
+        "retrieved_at_utc",
+        "usage_note"
+      ],
+      "title": "SourceProvenance",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "benchmark_method_id": {
+      "title": "Benchmark Method Id",
+      "type": "string"
+    },
+    "config_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "curve_id": {
+      "title": "Curve Id",
+      "type": "string"
+    },
+    "measured": {
+      "title": "Measured",
+      "type": "boolean"
+    },
+    "metric_scope": {
+      "enum": [
+        "inference_only",
+        "end_to_end"
+      ],
+      "title": "Metric Scope",
+      "type": "string"
+    },
+    "points": {
+      "items": {
+        "$ref": "#/$defs/ServiceCurvePoint"
+      },
+      "minItems": 1,
+      "title": "Points",
+      "type": "array"
+    },
+    "provenance": {
+      "$ref": "#/$defs/SourceProvenance"
+    },
+    "raw_artifact_digest": {
+      "$ref": "#/$defs/Digest"
+    },
+    "workload_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Workload Hash",
+      "type": "string"
+    }
+  },
+  "required": [
+    "curve_id",
+    "workload_hash",
+    "config_hash",
+    "measured",
+    "metric_scope",
+    "points",
+    "raw_artifact_digest",
+    "benchmark_method_id",
+    "provenance"
+  ],
+  "title": "ServiceCurve",
+  "type": "object"
+}

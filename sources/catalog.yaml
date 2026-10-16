@@ -1,0 +1,129 @@
+schema_version: "1.0.0"
+entries:
+  - source_id: agent-skills-spec
+    title: Agent Skills specification
+    url: https://agentskills.io/specification
+    authors: [Agent Skills maintainers]
+    publication_or_version_date: continuously versioned
+    source_type: specification
+    license_or_usage_note: Link and original synthesis only; follow the published specification.
+    topics: [agent-skills, portability]
+    last_verified_date: "2026-10-16"
+    content_digest:
+      algorithm: sha256
+      value: f36ae4007ec3a8cffaebbd586523686380b188fc4aa93d3c708af94e25420357
+    content_digest_semantics: SHA-256 of the canonical URL string; locator identity only, not fetched page bytes.
+    facts: []
+  - source_id: cuda-programming-guide
+    title: CUDA C++ Programming Guide
+    url: https://docs.nvidia.com/cuda/cuda-c-programming-guide/
+    authors: [NVIDIA]
+    publication_or_version_date: continuously versioned
+    source_type: vendor-documentation
+    license_or_usage_note: Link and original synthesis only; vendor terms apply.
+    topics: [cuda, memory-hierarchy, profiling]
+    last_verified_date: "2026-10-16"
+    content_digest:
+      algorithm: sha256
+      value: d2a9bf55d39459717af6a211ccb8335b2326e1d1a2a5c7639b0701e15bd82998
+    content_digest_semantics: SHA-256 of the canonical URL string; locator identity only, not fetched page bytes.
+    facts: []
+  - source_id: distserve-osdi24
+    title: "DistServe: Disaggregating Prefill and Decoding for Goodput-optimized LLM Serving"
+    url: https://www.usenix.org/system/files/osdi24-zhong-yinmin.pdf
+    authors: [Yinmin Zhong et al.]
+    publication_or_version_date: "2024"
+    source_type: peer-reviewed-paper
+    license_or_usage_note: Cite and synthesize; do not redistribute the paper.
+    topics: [goodput, prefill, decode, slo]
+    last_verified_date: "2026-10-16"
+    content_digest:
+      algorithm: sha256
+      value: 66fc9823f8739aeea915e667b8e4026ad2b3921b0855de62ca1df031b5ec6814
+    content_digest_semantics: SHA-256 of the canonical URL string; locator identity only, not PDF bytes.
+    facts: []
+  - source_id: jax-scaling-book
+    title: How to Scale Your Model
+    url: https://jax-ml.github.io/scaling-book/
+    authors: [JAX Scaling Book contributors]
+    publication_or_version_date: continuously versioned
+    source_type: technical-book
+    license_or_usage_note: Link and original synthesis only; project license applies.
+    topics: [model-parallelism, arithmetic-intensity, memory]
+    last_verified_date: "2026-10-16"
+    content_digest:
+      algorithm: sha256
+      value: 0243b22b5c5d53af5307f4212ecbc9ed05961fad0d91e9cf25cf7fb9852c9e8a
+    content_digest_semantics: SHA-256 of the canonical URL string; locator identity only, not fetched page bytes.
+    facts: []
+  - source_id: qwen25-7b-instruct-revision
+    title: Qwen2.5-7B-Instruct immutable model revision
+    url: https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/commit/a09a35458c702b33eeacc393d103063234e8bc28
+    authors: [Qwen]
+    publication_or_version_date: immutable commit a09a35458c702b33eeacc393d103063234e8bc28
+    source_type: model-artifact-revision
+    license_or_usage_note: Apache-2.0 model repository; verify model license and artifact digest at execution.
+    topics: [benchmarking, model-revision]
+    last_verified_date: "2026-10-16"
+    content_digest:
+      algorithm: sha256
+      value: 018d4e96c2020a4b9e6386e1c15455285fddbaad9dc4066d5b1b2a6e28b344cb
+    content_digest_semantics: SHA-256 of the immutable commit URL string; locator identity only, not model weights.
+    facts: []
+  - source_id: roofline-berkeley
+    title: "Roofline: An Insightful Visual Performance Model for Multicore Architectures"
+    url: https://www2.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-134.pdf
+    authors: [Samuel Williams, Andrew Waterman, David Patterson]
+    publication_or_version_date: "2008"
+    source_type: technical-report
+    license_or_usage_note: Cite and synthesize; do not redistribute the report.
+    topics: [roofline, arithmetic-intensity]
+    last_verified_date: "2026-10-16"
+    content_digest:
+      algorithm: sha256
+      value: bbba7a3c3f52c6519ffefff255005c6bbefacedddc65b11c44515d368a3c4e7d
+    content_digest_semantics: SHA-256 of the canonical URL string; locator identity only, not PDF bytes.
+    facts: []
+  - source_id: vllm-anatomy
+    title: Inside vLLM
+    url: https://vllm.ai/blog/2025-09-05-anatomy-of-vllm
+    authors: [vLLM project]
+    publication_or_version_date: "2025-09-05"
+    source_type: project-technical-article
+    license_or_usage_note: Link and original synthesis only; project terms apply.
+    topics: [request-lifecycle, scheduler, kv-cache, prefill, decode]
+    last_verified_date: "2026-10-16"
+    content_digest:
+      algorithm: sha256
+      value: 23fa2904d965ad58187e38fdd2d37a3ab72100dd35585aade4dd10b8d102a137
+    content_digest_semantics: SHA-256 of the canonical URL string; locator identity only, not fetched page bytes.
+    facts: []
+  - source_id: vllm-bench-serve
+    title: vLLM bench serve documentation
+    url: https://docs.vllm.ai/en/stable/cli/bench/serve/
+    authors: [vLLM project]
+    publication_or_version_date: stable documentation
+    source_type: project-documentation
+    license_or_usage_note: Link and original synthesis only; project terms apply.
+    topics: [benchmarking, workload, latency]
+    last_verified_date: "2026-10-16"
+    content_digest:
+      algorithm: sha256
+      value: 42add8bdd9cac6e4c1e400cd96982ead0edae387fc5827cbd24e81187473b6b3
+    content_digest_semantics: SHA-256 of the canonical URL string; locator identity only, not fetched page bytes.
+    facts: []
+  - source_id: vllm-production-metrics
+    title: vLLM production metrics
+    url: https://docs.vllm.ai/en/latest/usage/metrics/
+    authors: [vLLM project]
+    publication_or_version_date: latest documentation
+    source_type: project-documentation
+    license_or_usage_note: Link and original synthesis only; project terms apply.
+    topics: [metrics, observability, kv-cache, scheduler]
+    last_verified_date: "2026-10-16"
+    content_digest:
+      algorithm: sha256
+      value: 9ef5277ebd4ccdecdad9652d6c004f792ba2890addde7489ae6628641d2c2407
+    content_digest_semantics: SHA-256 of the canonical URL string; locator identity only, not fetched page bytes.
+    facts: []
+

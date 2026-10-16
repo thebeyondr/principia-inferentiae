@@ -1,0 +1,37 @@
+config_id: synthetic-vllm-tp2-long-context
+model_id: synthetic-gqa-8b
+model_revision: fixture-1
+runtime_name: vllm
+runtime_revision: "0.27.1"
+precision: bf16
+hardware_id: synthetic-80gb
+tensor_parallel_size: 2
+pipeline_parallel_size: 1
+max_concurrent_sequences: 8
+max_sequence_tokens: 20512
+max_batched_tokens: 8192
+weight_sharding: tensor_and_pipeline
+kv_sharding: shard_kv_heads
+sharding_imbalance_fraction: 0.05
+runtime_reserve:
+  runtime_fixed_bytes_per_rank: 4294967296
+  activation_bytes_per_rank: 2147483648
+  graph_bytes_per_rank: 1073741824
+  workspace_bytes_per_rank: 1073741824
+  fragmentation_fraction: 0.08
+  safety_margin_fraction: 0.10
+  provenance:
+    source_uri: fixture://principia/runtime-reserve/long-context
+    revision: fixture-1
+    digest:
+      algorithm: sha256
+      value: "5555555555555555555555555555555555555555555555555555555555555555"
+    evidence_class: declared
+    retrieved_at_utc: "2026-10-16T00:00:00Z"
+    usage_note: Conservative declared teaching reserve; must be replaced by measured per-rank peaks.
+material_runtime_flags:
+  - "--tensor-parallel-size=2"
+  - "--max-model-len=20512"
+  - "--max-num-seqs=8"
+  - "--max-num-batched-tokens=8192"
+

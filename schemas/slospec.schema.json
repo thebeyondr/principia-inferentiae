@@ -1,0 +1,108 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "max_e2e_ms_p99": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max E2E Ms P99"
+    },
+    "max_itl_ms_p99": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Itl Ms P99"
+    },
+    "max_tpot_ms_p99": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Tpot Ms P99"
+    },
+    "max_ttft_ms_p99": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Ttft Ms P99"
+    },
+    "metric_scope": {
+      "enum": [
+        "inference_only",
+        "end_to_end"
+      ],
+      "title": "Metric Scope",
+      "type": "string"
+    },
+    "min_aggregate_tps": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Min Aggregate Tps"
+    },
+    "min_goodput_fraction": {
+      "exclusiveMinimum": 0,
+      "maximum": 1,
+      "title": "Min Goodput Fraction",
+      "type": "number"
+    },
+    "min_per_user_tps": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Min Per User Tps"
+    },
+    "queue_boundary": {
+      "title": "Queue Boundary",
+      "type": "string"
+    }
+  },
+  "required": [
+    "min_goodput_fraction",
+    "metric_scope",
+    "queue_boundary"
+  ],
+  "title": "SLOSpec",
+  "type": "object"
+}

@@ -1,0 +1,232 @@
+{
+  "$defs": {
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "RuntimeReserve": {
+      "additionalProperties": false,
+      "properties": {
+        "activation_bytes_per_rank": {
+          "minimum": 0,
+          "title": "Activation Bytes Per Rank",
+          "type": "integer"
+        },
+        "fragmentation_fraction": {
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "title": "Fragmentation Fraction",
+          "type": "number"
+        },
+        "graph_bytes_per_rank": {
+          "minimum": 0,
+          "title": "Graph Bytes Per Rank",
+          "type": "integer"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceProvenance"
+        },
+        "runtime_fixed_bytes_per_rank": {
+          "minimum": 0,
+          "title": "Runtime Fixed Bytes Per Rank",
+          "type": "integer"
+        },
+        "safety_margin_fraction": {
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "title": "Safety Margin Fraction",
+          "type": "number"
+        },
+        "workspace_bytes_per_rank": {
+          "minimum": 0,
+          "title": "Workspace Bytes Per Rank",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "runtime_fixed_bytes_per_rank",
+        "activation_bytes_per_rank",
+        "graph_bytes_per_rank",
+        "workspace_bytes_per_rank",
+        "fragmentation_fraction",
+        "safety_margin_fraction",
+        "provenance"
+      ],
+      "title": "RuntimeReserve",
+      "type": "object"
+    },
+    "SourceProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "evidence_class": {
+          "enum": [
+            "authoritative",
+            "measured",
+            "synthetic",
+            "declared"
+          ],
+          "title": "Evidence Class",
+          "type": "string"
+        },
+        "retrieved_at_utc": {
+          "format": "date-time",
+          "title": "Retrieved At Utc",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "source_uri": {
+          "title": "Source Uri",
+          "type": "string"
+        },
+        "usage_note": {
+          "title": "Usage Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_uri",
+        "revision",
+        "digest",
+        "evidence_class",
+        "retrieved_at_utc",
+        "usage_note"
+      ],
+      "title": "SourceProvenance",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "config_id": {
+      "title": "Config Id",
+      "type": "string"
+    },
+    "hardware_id": {
+      "title": "Hardware Id",
+      "type": "string"
+    },
+    "kv_sharding": {
+      "enum": [
+        "replicated",
+        "shard_kv_heads",
+        "shard_layers"
+      ],
+      "title": "Kv Sharding",
+      "type": "string"
+    },
+    "material_runtime_flags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Material Runtime Flags",
+      "type": "array"
+    },
+    "max_batched_tokens": {
+      "exclusiveMinimum": 0,
+      "title": "Max Batched Tokens",
+      "type": "integer"
+    },
+    "max_concurrent_sequences": {
+      "exclusiveMinimum": 0,
+      "title": "Max Concurrent Sequences",
+      "type": "integer"
+    },
+    "max_sequence_tokens": {
+      "exclusiveMinimum": 0,
+      "title": "Max Sequence Tokens",
+      "type": "integer"
+    },
+    "model_id": {
+      "title": "Model Id",
+      "type": "string"
+    },
+    "model_revision": {
+      "title": "Model Revision",
+      "type": "string"
+    },
+    "pipeline_parallel_size": {
+      "exclusiveMinimum": 0,
+      "title": "Pipeline Parallel Size",
+      "type": "integer"
+    },
+    "precision": {
+      "title": "Precision",
+      "type": "string"
+    },
+    "runtime_name": {
+      "title": "Runtime Name",
+      "type": "string"
+    },
+    "runtime_reserve": {
+      "$ref": "#/$defs/RuntimeReserve"
+    },
+    "runtime_revision": {
+      "title": "Runtime Revision",
+      "type": "string"
+    },
+    "sharding_imbalance_fraction": {
+      "exclusiveMaximum": 1,
+      "minimum": 0,
+      "title": "Sharding Imbalance Fraction",
+      "type": "number"
+    },
+    "tensor_parallel_size": {
+      "exclusiveMinimum": 0,
+      "title": "Tensor Parallel Size",
+      "type": "integer"
+    },
+    "weight_sharding": {
+      "enum": [
+        "tensor_and_pipeline",
+        "pipeline_only",
+        "replicated"
+      ],
+      "title": "Weight Sharding",
+      "type": "string"
+    }
+  },
+  "required": [
+    "config_id",
+    "model_id",
+    "model_revision",
+    "runtime_name",
+    "runtime_revision",
+    "precision",
+    "hardware_id",
+    "tensor_parallel_size",
+    "pipeline_parallel_size",
+    "max_concurrent_sequences",
+    "max_sequence_tokens",
+    "max_batched_tokens",
+    "weight_sharding",
+    "kv_sharding",
+    "sharding_imbalance_fraction",
+    "runtime_reserve",
+    "material_runtime_flags"
+  ],
+  "title": "ServingConfig",
+  "type": "object"
+}

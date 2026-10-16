@@ -1,0 +1,95 @@
+schema_version: "1.0.0"
+plan_id: long-context-bursty-vllm-r2
+plan_revision: "1.0.0"
+status: pending_gpu_execution
+reproducibility_tier: R2
+runtime:
+  package: vllm
+  version: "0.27.1"
+  installed_artifact_sha256: REQUIRED_AT_EXECUTION
+model:
+  model_id: Qwen/Qwen2.5-7B-Instruct
+  revision: a09a35458c702b33eeacc393d103063234e8bc28
+  local_snapshot_sha256: REQUIRED_AFTER_DOWNLOAD
+  note: Real-run model differs from the synthetic static fixture; generate a new typed model/config identity before ingesting results.
+hardware:
+  target: two identical NVIDIA A100-SXM4-80GB devices
+  topology: tensor_parallel_2_single_node
+  inventory_and_topology_sha256: REQUIRED_AT_EXECUTION
+  clocks_power_thermal_capture: REQUIRED_AT_EXECUTION
+workload:
+  required_workload_hash: 46158ec26e3866ac6d6bbecbcf85e408c188779f17ec67387969768f4e0d5f43
+  canonical_trace: inputs/trace.jsonl
+  canonical_typed_trace_sha256: c8687dafe057c1593fae99e1ee321e0bcd9f3465b8bc45d8580ae0e71daf9337
+  trace_digest_semantics: SHA-256 of the order-normalized validated TraceRequest tuple.
+  replay_trace: outputs/vllm-timed-trace.jsonl
+  replay_adapter: principia prepare-vllm-trace --chunk-hash-size 512
+  replay_limitation: Chunk hashes preserve declared shared-prefix lengths, not semantic token content.
+  prompt_semantics: p99 20000 input tokens
+  output_semantics: maximum 512 generated tokens; never 20000 generated tokens
+  replay_dataset: timed_trace
+  timestamp_field: arrival_time_ms
+  input_length_field: prompt_tokens
+  output_length_field: output_tokens
+  timestamp_seconds_multiplier_at_target: 0.001
+  service_curve_seconds_multipliers: [0.002, 0.001, 0.0005, 0.00025]
+  trials_per_point: 3
+  warmup: one unrecorded target-rate replay after server readiness
+  run_order: seeded permutation recorded before execution
+slo:
+  metric_scope: end_to_end
+  max_ttft_ms_p99: 3000
+  max_tpot_ms_p99: 80
+  max_e2e_ms_p99: 50000
+  min_goodput_fraction: 0.95
+server_command: >-
+  vllm serve Qwen/Qwen2.5-7B-Instruct
+  --revision a09a35458c702b33eeacc393d103063234e8bc28
+  --dtype bfloat16
+  --tensor-parallel-size 2
+  --max-model-len 20512
+  --max-num-seqs 8
+  --max-num-batched-tokens 8192
+  --seed 20261016
+  --disable-log-requests
+client_command_template: >-
+  vllm bench serve
+  --backend vllm
+  --host 127.0.0.1
+  --port 8000
+  --model Qwen/Qwen2.5-7B-Instruct
+  --dataset-name timed_trace
+  --dataset-path case-studies/long-context-bursty/outputs/vllm-timed-trace.jsonl
+  --num-prompts 12
+  --self-timed
+  --timed-trace-sec-multiplier ${TIME_MULTIPLIER}
+  --timed-trace-chunk-hash-size 512
+  --max-concurrency 8
+  --ignore-eos
+  --seed 20261016
+  --percentile-metrics ttft,tpot,itl,e2el,client_queue_time,e2el_including_client_queue
+  --metric-percentiles 50,90,95,99
+  --goodput ttft:3000 tpot:80 e2el:50000
+  --save-result
+  --save-detailed
+  --result-dir ${RESULT_DIR}
+required_outputs:
+  - environment manifest with driver, CUDA, Python, package, wheel/container, GPU, clocks, power, and thermal state
+  - raw JSON for every warmup/trial/failure with SHA-256
+  - workload and serving-config hashes
+  - p50/p90/p95/p99 TTFT, ITL, TPOT, E2E, and client queue time
+  - per-user TPS, aggregate output TPS, request throughput, failures, and SLO-goodput
+  - per-rank peak allocated/reserved HBM and KV occupancy
+  - profiler FLOPs, HBM bytes, duration, scope, command, and artifact digest for any roofline claim
+acceptance_gates:
+  - Abort if model, runtime, hardware, workload, or config identity is incomplete.
+  - Generate and record a new real serving-config hash; never reuse the synthetic config hash.
+  - Never ingest the random/smoke workload as a matched service curve.
+  - Preserve failed and null trials.
+  - Restart or explicitly clear prefix-cache state between independently compared runs.
+  - A causal optimization claim requires baseline, hypothesis, one intervention, equivalent rerun, and measured delta.
+official_references:
+  - https://docs.vllm.ai/en/v0.27.1/cli/bench/serve/
+  - https://docs.vllm.ai/en/stable/benchmarking/cli/
+  - https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/commit/a09a35458c702b33eeacc393d103063234e8bc28
+

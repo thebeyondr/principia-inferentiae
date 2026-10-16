@@ -1,0 +1,10 @@
+evaluation_id: synthetic-contract-path-only
+model_id: synthetic-gqa-8b
+model_revision: fixture-1
+precision: bf16
+passed: true
+metric_summary: Synthetic fixture permits exercising sizing logic; it is not a real model-quality result.
+artifact_digest:
+  algorithm: sha256
+  value: "7777777777777777777777777777777777777777777777777777777777777777"
+

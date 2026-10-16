@@ -1,0 +1,133 @@
+{
+  "$defs": {
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "RuntimeCatalogEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_digest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Digest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "artifact_digest_semantics": {
+          "title": "Artifact Digest Semantics",
+          "type": "string"
+        },
+        "required_run_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Run Fields",
+          "type": "array"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "runtime_id": {
+          "title": "Runtime Id",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/RuntimeSource"
+        },
+        "supported_evidence_use": {
+          "title": "Supported Evidence Use",
+          "type": "string"
+        }
+      },
+      "required": [
+        "runtime_id",
+        "revision",
+        "artifact_digest",
+        "artifact_digest_semantics",
+        "source",
+        "supported_evidence_use",
+        "required_run_fields"
+      ],
+      "title": "RuntimeCatalogEntry",
+      "type": "object"
+    },
+    "RuntimeSource": {
+      "additionalProperties": false,
+      "properties": {
+        "locator_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Locator Sha256",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "revision",
+        "locator_sha256"
+      ],
+      "title": "RuntimeSource",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "catalog_digest_semantics": {
+      "title": "Catalog Digest Semantics",
+      "type": "string"
+    },
+    "catalog_revision": {
+      "title": "Catalog Revision",
+      "type": "string"
+    },
+    "entries": {
+      "items": {
+        "$ref": "#/$defs/RuntimeCatalogEntry"
+      },
+      "title": "Entries",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "catalog_revision",
+    "catalog_digest_semantics",
+    "entries"
+  ],
+  "title": "RuntimeCatalog",
+  "type": "object"
+}

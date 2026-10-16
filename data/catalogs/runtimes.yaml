@@ -1,0 +1,21 @@
+schema_version: "1.0.0"
+catalog_revision: fixture-1
+catalog_digest_semantics: Source digest is a locator digest unless an artifact digest is explicitly supplied by a benchmark run.
+entries:
+  - runtime_id: vllm-benchmark-plan
+    revision: "0.27.1"
+    artifact_digest: null
+    artifact_digest_semantics: Must be replaced by the installed wheel/container digest in a real R2 run.
+    source:
+      url: https://docs.vllm.ai/en/stable/cli/bench/serve/
+      revision: stable-docs-as-verified-2026-10-16
+      locator_sha256: 42add8bdd9cac6e4c1e400cd96982ead0edae387fc5827cbd24e81187473b6b3
+    supported_evidence_use: Pinned benchmark planning only; no throughput or latency fact is asserted.
+    required_run_fields:
+      - installed_artifact_digest
+      - exact_runtime_flags
+      - model_artifact_digest
+      - hardware_inventory
+      - warmup_and_trials
+      - raw_result_digest
+

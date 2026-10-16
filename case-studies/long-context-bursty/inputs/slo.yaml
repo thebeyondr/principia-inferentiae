@@ -1,0 +1,10 @@
+max_ttft_ms_p99: 3000
+max_itl_ms_p99: 80
+max_tpot_ms_p99: 80
+max_e2e_ms_p99: 50000
+min_per_user_tps: 12.5
+min_aggregate_tps: 100
+min_goodput_fraction: 0.95
+metric_scope: end_to_end
+queue_boundary: client send through final response byte, including queue and network
+

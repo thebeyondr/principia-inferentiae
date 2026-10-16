@@ -1,0 +1,66 @@
+{
+  "$defs": {
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_digest": {
+      "$ref": "#/$defs/Digest"
+    },
+    "evaluation_id": {
+      "title": "Evaluation Id",
+      "type": "string"
+    },
+    "metric_summary": {
+      "title": "Metric Summary",
+      "type": "string"
+    },
+    "model_id": {
+      "title": "Model Id",
+      "type": "string"
+    },
+    "model_revision": {
+      "title": "Model Revision",
+      "type": "string"
+    },
+    "passed": {
+      "title": "Passed",
+      "type": "boolean"
+    },
+    "precision": {
+      "title": "Precision",
+      "type": "string"
+    }
+  },
+  "required": [
+    "evaluation_id",
+    "model_id",
+    "model_revision",
+    "precision",
+    "passed",
+    "metric_summary",
+    "artifact_digest"
+  ],
+  "title": "QualityGate",
+  "type": "object"
+}

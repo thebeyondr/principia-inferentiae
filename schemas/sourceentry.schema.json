@@ -1,0 +1,129 @@
+{
+  "$defs": {
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "SourceFact": {
+      "additionalProperties": false,
+      "properties": {
+        "fact_key": {
+          "title": "Fact Key",
+          "type": "string"
+        },
+        "scope": {
+          "title": "Scope",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "fact_key",
+        "value",
+        "unit",
+        "scope"
+      ],
+      "title": "SourceFact",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "authors": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Authors",
+      "type": "array"
+    },
+    "content_digest": {
+      "$ref": "#/$defs/Digest"
+    },
+    "content_digest_semantics": {
+      "title": "Content Digest Semantics",
+      "type": "string"
+    },
+    "facts": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/SourceFact"
+      },
+      "title": "Facts",
+      "type": "array"
+    },
+    "last_verified_date": {
+      "title": "Last Verified Date",
+      "type": "string"
+    },
+    "license_or_usage_note": {
+      "title": "License Or Usage Note",
+      "type": "string"
+    },
+    "publication_or_version_date": {
+      "title": "Publication Or Version Date",
+      "type": "string"
+    },
+    "source_id": {
+      "title": "Source Id",
+      "type": "string"
+    },
+    "source_type": {
+      "title": "Source Type",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "topics": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Topics",
+      "type": "array"
+    },
+    "url": {
+      "title": "Url",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_id",
+    "title",
+    "url",
+    "authors",
+    "publication_or_version_date",
+    "source_type",
+    "license_or_usage_note",
+    "topics",
+    "last_verified_date",
+    "content_digest",
+    "content_digest_semantics"
+  ],
+  "title": "SourceEntry",
+  "type": "object"
+}

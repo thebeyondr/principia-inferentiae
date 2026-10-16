@@ -1,0 +1,206 @@
+{
+  "$defs": {
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "QuantizationSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "bits_per_weight": {
+          "exclusiveMinimum": 0,
+          "maximum": 32,
+          "title": "Bits Per Weight",
+          "type": "number"
+        },
+        "group_size": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Group Size"
+        },
+        "metadata_bytes_per_parameter": {
+          "minimum": 0,
+          "title": "Metadata Bytes Per Parameter",
+          "type": "number"
+        },
+        "metadata_semantics": {
+          "title": "Metadata Semantics",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "bits_per_weight",
+        "metadata_bytes_per_parameter",
+        "metadata_semantics"
+      ],
+      "title": "QuantizationSpec",
+      "type": "object"
+    },
+    "SourceProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "evidence_class": {
+          "enum": [
+            "authoritative",
+            "measured",
+            "synthetic",
+            "declared"
+          ],
+          "title": "Evidence Class",
+          "type": "string"
+        },
+        "retrieved_at_utc": {
+          "format": "date-time",
+          "title": "Retrieved At Utc",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "source_uri": {
+          "title": "Source Uri",
+          "type": "string"
+        },
+        "usage_note": {
+          "title": "Usage Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_uri",
+        "revision",
+        "digest",
+        "evidence_class",
+        "retrieved_at_utc",
+        "usage_note"
+      ],
+      "title": "SourceProvenance",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "attention_heads": {
+      "exclusiveMinimum": 0,
+      "title": "Attention Heads",
+      "type": "integer"
+    },
+    "attention_type": {
+      "enum": [
+        "MHA",
+        "GQA",
+        "MQA"
+      ],
+      "title": "Attention Type",
+      "type": "string"
+    },
+    "head_dim": {
+      "exclusiveMinimum": 0,
+      "title": "Head Dim",
+      "type": "integer"
+    },
+    "hidden_size": {
+      "exclusiveMinimum": 0,
+      "title": "Hidden Size",
+      "type": "integer"
+    },
+    "kv_dtype_bytes": {
+      "exclusiveMinimum": 0,
+      "maximum": 8,
+      "title": "Kv Dtype Bytes",
+      "type": "number"
+    },
+    "kv_heads": {
+      "exclusiveMinimum": 0,
+      "title": "Kv Heads",
+      "type": "integer"
+    },
+    "kv_projection_parameter_count": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Kv Projection Parameter Count"
+    },
+    "layer_count": {
+      "exclusiveMinimum": 0,
+      "title": "Layer Count",
+      "type": "integer"
+    },
+    "model_id": {
+      "title": "Model Id",
+      "type": "string"
+    },
+    "parameter_count": {
+      "exclusiveMinimum": 0,
+      "title": "Parameter Count",
+      "type": "integer"
+    },
+    "provenance": {
+      "$ref": "#/$defs/SourceProvenance"
+    },
+    "revision": {
+      "title": "Revision",
+      "type": "string"
+    },
+    "weight_format": {
+      "$ref": "#/$defs/QuantizationSpec"
+    }
+  },
+  "required": [
+    "model_id",
+    "revision",
+    "parameter_count",
+    "layer_count",
+    "hidden_size",
+    "attention_heads",
+    "kv_heads",
+    "head_dim",
+    "attention_type",
+    "weight_format",
+    "kv_dtype_bytes",
+    "provenance"
+  ],
+  "title": "ModelSpec",
+  "type": "object"
+}

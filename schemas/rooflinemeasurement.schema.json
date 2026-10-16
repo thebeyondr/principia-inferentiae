@@ -1,0 +1,217 @@
+{
+  "$defs": {
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "SourceProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "evidence_class": {
+          "enum": [
+            "authoritative",
+            "measured",
+            "synthetic",
+            "declared"
+          ],
+          "title": "Evidence Class",
+          "type": "string"
+        },
+        "retrieved_at_utc": {
+          "format": "date-time",
+          "title": "Retrieved At Utc",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "source_uri": {
+          "title": "Source Uri",
+          "type": "string"
+        },
+        "usage_note": {
+          "title": "Usage Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_uri",
+        "revision",
+        "digest",
+        "evidence_class",
+        "retrieved_at_utc",
+        "usage_note"
+      ],
+      "title": "SourceProvenance",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "capacity_used_bytes": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Capacity Used Bytes"
+    },
+    "duration_ms": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Duration Ms"
+    },
+    "flops": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Flops"
+    },
+    "generic_gpu_utilization_fraction": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Generic Gpu Utilization Fraction"
+    },
+    "hardware_id": {
+      "title": "Hardware Id",
+      "type": "string"
+    },
+    "hardware_revision": {
+      "title": "Hardware Revision",
+      "type": "string"
+    },
+    "hbm_bytes_moved": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Hbm Bytes Moved"
+    },
+    "measurement_id": {
+      "title": "Measurement Id",
+      "type": "string"
+    },
+    "measurement_status": {
+      "enum": [
+        "measured",
+        "planned"
+      ],
+      "title": "Measurement Status",
+      "type": "string"
+    },
+    "phase": {
+      "anyOf": [
+        {
+          "enum": [
+            "prefill",
+            "decode_step"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Phase"
+    },
+    "precision": {
+      "title": "Precision",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/SourceProvenance"
+    },
+    "raw_artifact_digest": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Digest"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "scope_kind": {
+      "enum": [
+        "kernel",
+        "phase"
+      ],
+      "title": "Scope Kind",
+      "type": "string"
+    },
+    "scope_name": {
+      "title": "Scope Name",
+      "type": "string"
+    }
+  },
+  "required": [
+    "measurement_id",
+    "measurement_status",
+    "scope_kind",
+    "scope_name",
+    "hardware_id",
+    "hardware_revision",
+    "precision",
+    "provenance"
+  ],
+  "title": "RooflineMeasurement",
+  "type": "object"
+}

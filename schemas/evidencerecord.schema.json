@@ -1,0 +1,106 @@
+{
+  "$defs": {
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "EvidenceKind": {
+      "enum": [
+        "input",
+        "synthetic_fixture",
+        "direct_event",
+        "measured_metric",
+        "correlation",
+        "configuration",
+        "intervention",
+        "artifact",
+        "estimate"
+      ],
+      "title": "EvidenceKind",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "description": {
+      "minLength": 1,
+      "title": "Description",
+      "type": "string"
+    },
+    "event_type": {
+      "anyOf": [
+        {
+          "enum": [
+            "oom",
+            "preemption"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Event Type"
+    },
+    "evidence_id": {
+      "minLength": 1,
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/EvidenceKind"
+    },
+    "observed_value": {
+      "title": "Observed Value",
+      "type": "string"
+    },
+    "source_digest": {
+      "$ref": "#/$defs/Digest"
+    },
+    "timestamp_ms": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Timestamp Ms"
+    },
+    "unit": {
+      "title": "Unit",
+      "type": "string"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "kind",
+    "description",
+    "observed_value",
+    "unit",
+    "source_digest"
+  ],
+  "title": "EvidenceRecord",
+  "type": "object"
+}

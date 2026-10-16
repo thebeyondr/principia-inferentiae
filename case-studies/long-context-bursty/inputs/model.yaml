@@ -1,0 +1,26 @@
+model_id: synthetic-gqa-8b
+revision: fixture-1
+parameter_count: 8000000000
+layer_count: 32
+hidden_size: 4096
+attention_heads: 32
+kv_heads: 8
+head_dim: 128
+attention_type: GQA
+weight_format:
+  name: bf16
+  bits_per_weight: 16
+  metadata_bytes_per_parameter: 0
+  group_size: null
+  metadata_semantics: No quantization metadata in this synthetic BF16 fixture.
+kv_dtype_bytes: 2
+provenance:
+  source_uri: fixture://principia/synthetic-gqa-8b
+  revision: fixture-1
+  digest:
+    algorithm: sha256
+    value: "1111111111111111111111111111111111111111111111111111111111111111"
+  evidence_class: synthetic
+  retrieved_at_utc: "2026-10-16T00:00:00Z"
+  usage_note: Synthetic geometry for formula tests; not a named model or quality claim.
+

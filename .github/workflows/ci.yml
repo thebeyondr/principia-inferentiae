@@ -1,0 +1,48 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --extra dev --frozen
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy src tests
+      - run: uv run pytest
+      - name: Reproduce first case
+        run: |
+          uv run principia prepare-vllm-trace \
+            --trace case-studies/long-context-bursty/inputs/trace.jsonl \
+            --chunk-hash-size 512 \
+            --output /tmp/vllm-timed-trace.jsonl
+          uv run principia analyze \
+            --run case-studies/long-context-bursty/inputs/run.yaml \
+            --trace case-studies/long-context-bursty/inputs/trace.jsonl \
+            --slo case-studies/long-context-bursty/inputs/slo.yaml \
+            --model case-studies/long-context-bursty/inputs/model.yaml \
+            --hardware case-studies/long-context-bursty/inputs/hardware.yaml \
+            --config case-studies/long-context-bursty/inputs/serving-config.yaml \
+            --measurement case-studies/long-context-bursty/inputs/roofline-measurement.yaml \
+            --quality-gate case-studies/long-context-bursty/inputs/quality-gate.yaml \
+            --policy case-studies/long-context-bursty/inputs/sizing-policy.yaml \
+            --output /tmp/analysis.json
+          uv run principia write-brief \
+            --analysis /tmp/analysis.json \
+            --audience stakeholder \
+            --output /tmp/stakeholder-brief.md
+

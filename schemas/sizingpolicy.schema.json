@@ -1,0 +1,28 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "failure_reserve_replicas": {
+      "minimum": 0,
+      "title": "Failure Reserve Replicas",
+      "type": "integer"
+    },
+    "rollout_reserve_replicas": {
+      "minimum": 0,
+      "title": "Rollout Reserve Replicas",
+      "type": "integer"
+    },
+    "target_headroom_fraction": {
+      "exclusiveMaximum": 1,
+      "minimum": 0,
+      "title": "Target Headroom Fraction",
+      "type": "number"
+    }
+  },
+  "required": [
+    "target_headroom_fraction",
+    "failure_reserve_replicas",
+    "rollout_reserve_replicas"
+  ],
+  "title": "SizingPolicy",
+  "type": "object"
+}

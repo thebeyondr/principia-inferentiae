@@ -1,0 +1,153 @@
+{
+  "$defs": {
+    "AnalysisStatus": {
+      "enum": [
+        "supported",
+        "insufficient_evidence",
+        "inconclusive",
+        "memory_not_fit",
+        "slo_not_met",
+        "quality_gate_failed"
+      ],
+      "title": "AnalysisStatus",
+      "type": "string"
+    },
+    "Confidence": {
+      "enum": [
+        "none",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "UnitRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "unit"
+      ],
+      "title": "UnitRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "assumptions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "claim_id": {
+      "minLength": 1,
+      "title": "Claim Id",
+      "type": "string"
+    },
+    "claim_type": {
+      "minLength": 1,
+      "title": "Claim Type",
+      "type": "string"
+    },
+    "confidence": {
+      "$ref": "#/$defs/Confidence"
+    },
+    "contrary_evidence_ids": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Contrary Evidence Ids",
+      "type": "array"
+    },
+    "evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "method_id": {
+      "minLength": 1,
+      "title": "Method Id",
+      "type": "string"
+    },
+    "missing_telemetry": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Telemetry",
+      "type": "array"
+    },
+    "next_discriminating_experiment": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Next Discriminating Experiment"
+    },
+    "statement": {
+      "minLength": 1,
+      "title": "Statement",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/AnalysisStatus"
+    },
+    "supporting_evidence_ids": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Supporting Evidence Ids",
+      "type": "array"
+    },
+    "units": {
+      "items": {
+        "$ref": "#/$defs/UnitRecord"
+      },
+      "title": "Units",
+      "type": "array"
+    }
+  },
+  "required": [
+    "claim_id",
+    "claim_type",
+    "statement",
+    "status",
+    "evidence_ids",
+    "method_id",
+    "units",
+    "assumptions",
+    "limitations",
+    "confidence",
+    "missing_telemetry",
+    "next_discriminating_experiment"
+  ],
+  "title": "Claim",
+  "type": "object"
+}

@@ -1,0 +1,559 @@
+{
+  "$defs": {
+    "AnalysisStatus": {
+      "enum": [
+        "supported",
+        "insufficient_evidence",
+        "inconclusive",
+        "memory_not_fit",
+        "slo_not_met",
+        "quality_gate_failed"
+      ],
+      "title": "AnalysisStatus",
+      "type": "string"
+    },
+    "BenchmarkPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "command_template": {
+          "title": "Command Template",
+          "type": "string"
+        },
+        "equivalence_requirements": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Equivalence Requirements",
+          "type": "array"
+        },
+        "load_points_rps": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Load Points Rps",
+          "type": "array"
+        },
+        "plan_id": {
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "required_config_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Required Config Hash",
+          "type": "string"
+        },
+        "required_metrics": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Metrics",
+          "type": "array"
+        },
+        "required_workload_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Required Workload Hash",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "required",
+            "not_required"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "plan_id",
+        "status",
+        "required_workload_hash",
+        "required_config_hash",
+        "required_metrics",
+        "load_points_rps",
+        "command_template",
+        "equivalence_requirements"
+      ],
+      "title": "BenchmarkPlan",
+      "type": "object"
+    },
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "assumptions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "claim_id": {
+          "minLength": 1,
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "claim_type": {
+          "minLength": 1,
+          "title": "Claim Type",
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "contrary_evidence_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Contrary Evidence Ids",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "method_id": {
+          "minLength": 1,
+          "title": "Method Id",
+          "type": "string"
+        },
+        "missing_telemetry": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Telemetry",
+          "type": "array"
+        },
+        "next_discriminating_experiment": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Next Discriminating Experiment"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/AnalysisStatus"
+        },
+        "supporting_evidence_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Supporting Evidence Ids",
+          "type": "array"
+        },
+        "units": {
+          "items": {
+            "$ref": "#/$defs/UnitRecord"
+          },
+          "title": "Units",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claim_id",
+        "claim_type",
+        "statement",
+        "status",
+        "evidence_ids",
+        "method_id",
+        "units",
+        "assumptions",
+        "limitations",
+        "confidence",
+        "missing_telemetry",
+        "next_discriminating_experiment"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "Confidence": {
+      "enum": [
+        "none",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "DeploymentRecommendation": {
+      "additionalProperties": false,
+      "properties": {
+        "active_replicas": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Active Replicas"
+        },
+        "assumptions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "gpus_per_replica": {
+          "title": "Gpus Per Replica",
+          "type": "integer"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "matched_service_curve_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Matched Service Curve Id"
+        },
+        "max_slo_goodput_rps_per_replica": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Max Slo Goodput Rps Per Replica"
+        },
+        "memory_fit_lower_bound_gpus": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Memory Fit Lower Bound Gpus"
+        },
+        "quality_gate_evaluation_id": {
+          "title": "Quality Gate Evaluation Id",
+          "type": "string"
+        },
+        "recommended_gpu_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Recommended Gpu Count"
+        },
+        "required_peak_rps_with_headroom": {
+          "title": "Required Peak Rps With Headroom",
+          "type": "number"
+        },
+        "status": {
+          "$ref": "#/$defs/AnalysisStatus"
+        },
+        "total_replicas_with_reserve": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Total Replicas With Reserve"
+        }
+      },
+      "required": [
+        "status",
+        "memory_fit_lower_bound_gpus",
+        "recommended_gpu_count",
+        "active_replicas",
+        "total_replicas_with_reserve",
+        "gpus_per_replica",
+        "matched_service_curve_id",
+        "max_slo_goodput_rps_per_replica",
+        "required_peak_rps_with_headroom",
+        "quality_gate_evaluation_id",
+        "assumptions",
+        "limitations"
+      ],
+      "title": "DeploymentRecommendation",
+      "type": "object"
+    },
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "EvidenceKind": {
+      "enum": [
+        "input",
+        "synthetic_fixture",
+        "direct_event",
+        "measured_metric",
+        "correlation",
+        "configuration",
+        "intervention",
+        "artifact",
+        "estimate"
+      ],
+      "title": "EvidenceKind",
+      "type": "string"
+    },
+    "EvidenceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "event_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "oom",
+                "preemption"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Event Type"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/EvidenceKind"
+        },
+        "observed_value": {
+          "title": "Observed Value",
+          "type": "string"
+        },
+        "source_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "timestamp_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timestamp Ms"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "kind",
+        "description",
+        "observed_value",
+        "unit",
+        "source_digest"
+      ],
+      "title": "EvidenceRecord",
+      "type": "object"
+    },
+    "RunMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "assumptions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "code_revision": {
+          "minLength": 1,
+          "title": "Code Revision",
+          "type": "string"
+        },
+        "created_at_utc": {
+          "format": "date-time",
+          "title": "Created At Utc",
+          "type": "string"
+        },
+        "input_digests": {
+          "items": {
+            "$ref": "#/$defs/Digest"
+          },
+          "title": "Input Digests",
+          "type": "array"
+        },
+        "limitations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "method_revision": {
+          "minLength": 1,
+          "title": "Method Revision",
+          "type": "string"
+        },
+        "package_version": {
+          "minLength": 1,
+          "title": "Package Version",
+          "type": "string"
+        },
+        "random_seed": {
+          "title": "Random Seed",
+          "type": "integer"
+        },
+        "reproducibility_tier": {
+          "enum": [
+            "R0",
+            "R1",
+            "R2",
+            "R3"
+          ],
+          "title": "Reproducibility Tier",
+          "type": "string"
+        },
+        "run_id": {
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "run_id",
+        "created_at_utc",
+        "package_version",
+        "code_revision",
+        "reproducibility_tier",
+        "method_revision",
+        "random_seed",
+        "input_digests"
+      ],
+      "title": "RunMetadata",
+      "type": "object"
+    },
+    "UnitRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "unit"
+      ],
+      "title": "UnitRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "benchmark_plan": {
+      "$ref": "#/$defs/BenchmarkPlan"
+    },
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/Claim"
+      },
+      "title": "Claims",
+      "type": "array"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/EvidenceRecord"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "recommendation": {
+      "$ref": "#/$defs/DeploymentRecommendation"
+    },
+    "run": {
+      "$ref": "#/$defs/RunMetadata"
+    }
+  },
+  "required": [
+    "run",
+    "evidence",
+    "claims",
+    "recommendation",
+    "benchmark_plan"
+  ],
+  "title": "SizingAnalysis",
+  "type": "object"
+}

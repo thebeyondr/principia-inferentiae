@@ -1,0 +1,68 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "arrival_time_ms": {
+      "minimum": 0,
+      "title": "Arrival Time Ms",
+      "type": "integer"
+    },
+    "completed_time_ms": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Completed Time Ms"
+    },
+    "output_tokens": {
+      "minimum": 1,
+      "title": "Output Tokens",
+      "type": "integer"
+    },
+    "prefix_key": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Prefix Key"
+    },
+    "prompt_tokens": {
+      "minimum": 1,
+      "title": "Prompt Tokens",
+      "type": "integer"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "shared_prefix_tokens": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Shared Prefix Tokens",
+      "type": "integer"
+    },
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "arrival_time_ms",
+    "prompt_tokens",
+    "output_tokens",
+    "tenant_id"
+  ],
+  "title": "TraceRequest",
+  "type": "object"
+}

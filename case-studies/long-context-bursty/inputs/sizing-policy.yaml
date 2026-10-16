@@ -1,0 +1,4 @@
+target_headroom_fraction: 0.25
+failure_reserve_replicas: 1
+rollout_reserve_replicas: 1
+

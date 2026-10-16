@@ -1,0 +1,261 @@
+{
+  "$defs": {
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "Percentiles": {
+      "additionalProperties": false,
+      "properties": {
+        "p50": {
+          "minimum": 0,
+          "title": "P50",
+          "type": "number"
+        },
+        "p95": {
+          "minimum": 0,
+          "title": "P95",
+          "type": "number"
+        },
+        "p99": {
+          "minimum": 0,
+          "title": "P99",
+          "type": "number"
+        }
+      },
+      "required": [
+        "p50",
+        "p95",
+        "p99"
+      ],
+      "title": "Percentiles",
+      "type": "object"
+    },
+    "SLOSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "max_e2e_ms_p99": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max E2E Ms P99"
+        },
+        "max_itl_ms_p99": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Itl Ms P99"
+        },
+        "max_tpot_ms_p99": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Tpot Ms P99"
+        },
+        "max_ttft_ms_p99": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Ttft Ms P99"
+        },
+        "metric_scope": {
+          "enum": [
+            "inference_only",
+            "end_to_end"
+          ],
+          "title": "Metric Scope",
+          "type": "string"
+        },
+        "min_aggregate_tps": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Aggregate Tps"
+        },
+        "min_goodput_fraction": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Min Goodput Fraction",
+          "type": "number"
+        },
+        "min_per_user_tps": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Per User Tps"
+        },
+        "queue_boundary": {
+          "title": "Queue Boundary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "min_goodput_fraction",
+        "metric_scope",
+        "queue_boundary"
+      ],
+      "title": "SLOSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "burstiness_peak_to_mean": {
+      "minimum": 1,
+      "title": "Burstiness Peak To Mean",
+      "type": "number"
+    },
+    "mean_arrival_rps": {
+      "minimum": 0,
+      "title": "Mean Arrival Rps",
+      "type": "number"
+    },
+    "missing_telemetry": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Telemetry",
+      "type": "array"
+    },
+    "observation_window_ms": {
+      "exclusiveMinimum": 0,
+      "title": "Observation Window Ms",
+      "type": "integer"
+    },
+    "output_tokens": {
+      "$ref": "#/$defs/Percentiles"
+    },
+    "peak_observed_concurrency": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Peak Observed Concurrency"
+    },
+    "peak_one_second_arrival_rps": {
+      "minimum": 0,
+      "title": "Peak One Second Arrival Rps",
+      "type": "number"
+    },
+    "prefix_reuse_fraction": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Prefix Reuse Fraction",
+      "type": "number"
+    },
+    "prompt_tokens": {
+      "$ref": "#/$defs/Percentiles"
+    },
+    "request_count": {
+      "exclusiveMinimum": 0,
+      "title": "Request Count",
+      "type": "integer"
+    },
+    "shared_prefix_tokens": {
+      "$ref": "#/$defs/Percentiles"
+    },
+    "slo": {
+      "$ref": "#/$defs/SLOSpec"
+    },
+    "tenant_count": {
+      "exclusiveMinimum": 0,
+      "title": "Tenant Count",
+      "type": "integer"
+    },
+    "total_tokens": {
+      "$ref": "#/$defs/Percentiles"
+    },
+    "trace_digest": {
+      "$ref": "#/$defs/Digest"
+    },
+    "workload_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Workload Hash",
+      "type": "string"
+    }
+  },
+  "required": [
+    "workload_hash",
+    "trace_digest",
+    "request_count",
+    "observation_window_ms",
+    "prompt_tokens",
+    "output_tokens",
+    "total_tokens",
+    "mean_arrival_rps",
+    "peak_one_second_arrival_rps",
+    "burstiness_peak_to_mean",
+    "prefix_reuse_fraction",
+    "shared_prefix_tokens",
+    "tenant_count",
+    "slo",
+    "missing_telemetry"
+  ],
+  "title": "WorkloadProfile",
+  "type": "object"
+}

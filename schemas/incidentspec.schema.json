@@ -1,0 +1,324 @@
+{
+  "$defs": {
+    "Digest": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "title": "Digest",
+      "type": "object"
+    },
+    "EvidenceKind": {
+      "enum": [
+        "input",
+        "synthetic_fixture",
+        "direct_event",
+        "measured_metric",
+        "correlation",
+        "configuration",
+        "intervention",
+        "artifact",
+        "estimate"
+      ],
+      "title": "EvidenceKind",
+      "type": "string"
+    },
+    "EvidenceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "event_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "oom",
+                "preemption"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Event Type"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/EvidenceKind"
+        },
+        "observed_value": {
+          "title": "Observed Value",
+          "type": "string"
+        },
+        "source_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "timestamp_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timestamp Ms"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "kind",
+        "description",
+        "observed_value",
+        "unit",
+        "source_digest"
+      ],
+      "title": "EvidenceRecord",
+      "type": "object"
+    },
+    "HypothesisSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "enum": [
+            "queue_scheduler",
+            "prefill",
+            "decode",
+            "kv_capacity",
+            "hbm_bandwidth",
+            "compute",
+            "interconnect",
+            "host_tokenization",
+            "network"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "expected_metric_direction": {
+          "enum": [
+            "increase",
+            "decrease"
+          ],
+          "title": "Expected Metric Direction",
+          "type": "string"
+        },
+        "expected_observation": {
+          "title": "Expected Observation",
+          "type": "string"
+        },
+        "hypothesis_id": {
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "category",
+        "statement",
+        "expected_observation",
+        "expected_metric_direction"
+      ],
+      "title": "HypothesisSpec",
+      "type": "object"
+    },
+    "IncidentEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "$ref": "#/$defs/EvidenceRecord"
+        },
+        "hypothesis_id": {
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "stance": {
+          "enum": [
+            "supporting",
+            "contrary"
+          ],
+          "title": "Stance",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "hypothesis_id",
+        "stance"
+      ],
+      "title": "IncidentEvidence",
+      "type": "object"
+    },
+    "InterventionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_config_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Baseline Config Hash",
+          "type": "string"
+        },
+        "baseline_evidence_id": {
+          "title": "Baseline Evidence Id",
+          "type": "string"
+        },
+        "baseline_run_id": {
+          "title": "Baseline Run Id",
+          "type": "string"
+        },
+        "baseline_workload_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Baseline Workload Hash",
+          "type": "string"
+        },
+        "changed_variable": {
+          "title": "Changed Variable",
+          "type": "string"
+        },
+        "dispersion": {
+          "exclusiveMinimum": 0,
+          "title": "Dispersion",
+          "type": "number"
+        },
+        "explicit_hypothesis": {
+          "title": "Explicit Hypothesis",
+          "type": "string"
+        },
+        "hypothesis_id": {
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "intervention_id": {
+          "title": "Intervention Id",
+          "type": "string"
+        },
+        "metric_name": {
+          "title": "Metric Name",
+          "type": "string"
+        },
+        "rerun_config_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Rerun Config Hash",
+          "type": "string"
+        },
+        "rerun_evidence_id": {
+          "title": "Rerun Evidence Id",
+          "type": "string"
+        },
+        "rerun_id": {
+          "title": "Rerun Id",
+          "type": "string"
+        },
+        "rerun_workload_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Rerun Workload Hash",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "intervention_id",
+        "hypothesis_id",
+        "explicit_hypothesis",
+        "changed_variable",
+        "baseline_run_id",
+        "rerun_id",
+        "baseline_workload_hash",
+        "rerun_workload_hash",
+        "baseline_config_hash",
+        "rerun_config_hash",
+        "metric_name",
+        "dispersion",
+        "unit",
+        "baseline_evidence_id",
+        "rerun_evidence_id"
+      ],
+      "title": "InterventionResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "baseline_run_id": {
+      "title": "Baseline Run Id",
+      "type": "string"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/IncidentEvidence"
+      },
+      "minItems": 1,
+      "title": "Evidence",
+      "type": "array"
+    },
+    "hypotheses": {
+      "items": {
+        "$ref": "#/$defs/HypothesisSpec"
+      },
+      "minItems": 1,
+      "title": "Hypotheses",
+      "type": "array"
+    },
+    "incident_id": {
+      "title": "Incident Id",
+      "type": "string"
+    },
+    "interventions": {
+      "items": {
+        "$ref": "#/$defs/InterventionResult"
+      },
+      "title": "Interventions",
+      "type": "array"
+    },
+    "required_telemetry": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Required Telemetry",
+      "type": "array"
+    }
+  },
+  "required": [
+    "incident_id",
+    "baseline_run_id",
+    "hypotheses",
+    "evidence",
+    "interventions",
+    "required_telemetry"
+  ],
+  "title": "IncidentSpec",
+  "type": "object"
+}

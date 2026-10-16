@@ -1,0 +1,58 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "principia-inferentiae"
+version = "0.1.0"
+description = "An executable, evidence-first knowledge base for LLM inference engineering."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Principia Inferentiae contributors" }]
+dependencies = [
+  "pydantic==2.11.7",
+  "PyYAML==6.0.2",
+  "typer==0.16.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy==1.17.0",
+  "pytest==8.4.1",
+  "ruff==0.12.5",
+  "types-PyYAML==6.0.12.20250516",
+]
+
+[project.scripts]
+principia = "principia_inferentiae.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/principia_inferentiae"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = ["case-studies/**/outputs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/principia_inferentiae/cli.py" = ["B008"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unreachable = true
+pretty = true
+files = ["src", "tests"]
+

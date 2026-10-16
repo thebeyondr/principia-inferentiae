@@ -1,0 +1,24 @@
+measurement_id: long-context-decode-profile-pending
+measurement_status: planned
+scope_kind: phase
+scope_name: steady-state decode step under matched burst workload
+phase: decode_step
+hardware_id: synthetic-80gb
+hardware_revision: fixture-1
+precision: bf16
+flops: null
+hbm_bytes_moved: null
+duration_ms: null
+capacity_used_bytes: null
+generic_gpu_utilization_fraction: null
+raw_artifact_digest: null
+provenance:
+  source_uri: plan://case-studies/long-context-bursty/benchmark-plan
+  revision: "1.0.0"
+  digest:
+    algorithm: sha256
+    value: "6666666666666666666666666666666666666666666666666666666666666666"
+  evidence_class: declared
+  retrieved_at_utc: "2026-10-16T00:00:00Z"
+  usage_note: Planned measurement only; contains no profiler or benchmark observation.
+

@@ -44,6 +44,7 @@ SKILL_NAMES = (
     "size-model-deployment",
     "diagnose-serving-regression",
     "write-inference-brief",
+    "inference-tutor",
 )
 
 

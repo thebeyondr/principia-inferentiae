@@ -1,0 +1,54 @@
+- id: sizing.service_curve_identity
+  label: Service-curve identity
+  domain: sizing
+  subdomain: sizing.identity
+  grading_type: choice
+  prerequisites: [metrics.goodput, workload.burst_vs_steady]
+  key_prerequisites: [workload.burst_vs_steady]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-baseline-results
+  knowledge_page: knowledge/model-deployment-sizing.md#theory
+- id: sizing.memory_fit_lower_bound
+  label: Memory-fit lower bound
+  domain: sizing
+  subdomain: sizing.capacity
+  grading_type: numeric_units
+  prerequisites: [kv.per_rank_fit, sizing.service_curve_identity]
+  key_prerequisites: [sizing.service_curve_identity]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/model-deployment-sizing.md#theory
+- id: sizing.null_gpu_count
+  label: Null GPU count without a matched curve
+  domain: sizing
+  subdomain: sizing.capacity
+  grading_type: choice
+  prerequisites: [sizing.memory_fit_lower_bound]
+  key_prerequisites: [sizing.memory_fit_lower_bound]
+  encompasses: [sizing.memory_fit_lower_bound]
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/model-deployment-sizing.md#theory
+- id: sizing.benchmark_plan
+  label: Benchmark plan is the next step
+  domain: sizing
+  subdomain: sizing.plan
+  grading_type: choice
+  prerequisites: [sizing.null_gpu_count]
+  key_prerequisites: [sizing.null_gpu_count]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-baseline-results
+  knowledge_page: knowledge/model-deployment-sizing.md#theory

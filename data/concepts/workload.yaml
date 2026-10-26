@@ -1,0 +1,70 @@
+- id: workload.prompt_vs_output
+  label: Prompt versus output distributions
+  domain: workload
+  subdomain: workload.shape
+  grading_type: numeric_units
+  prerequisites: [metrics.p50_vs_p99]
+  key_prerequisites: [metrics.p50_vs_p99]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-load-generation
+  knowledge_page: knowledge/workload-characterization.md#theory
+- id: workload.peak_concurrency
+  label: Peak observed concurrency
+  domain: workload
+  subdomain: workload.traffic
+  grading_type: numeric_units
+  prerequisites: [workload.prompt_vs_output]
+  key_prerequisites: [workload.prompt_vs_output]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-load-generation
+  knowledge_page: knowledge/workload-characterization.md#theory
+- id: workload.burst_vs_steady
+  label: Burst versus steady arrivals
+  domain: workload
+  subdomain: workload.traffic
+  grading_type: numeric_units
+  prerequisites: [workload.peak_concurrency]
+  key_prerequisites: [workload.peak_concurrency]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-load-generation
+  knowledge_page: knowledge/workload-characterization.md#theory
+- id: workload.prefix_reuse
+  label: Prefix reuse fraction
+  domain: workload
+  subdomain: workload.reuse
+  grading_type: numeric_units
+  prerequisites: [kv.bytes_per_token, workload.prompt_vs_output]
+  key_prerequisites: [workload.prompt_vs_output]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/workload-characterization.md#theory
+- id: workload.tenant_mix
+  label: Tenant mix
+  domain: workload
+  subdomain: workload.shape
+  grading_type: numeric_units
+  prerequisites: [workload.prompt_vs_output]
+  key_prerequisites: [workload.prompt_vs_output]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-load-generation
+  knowledge_page: knowledge/workload-characterization.md#theory

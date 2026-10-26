@@ -33,6 +33,7 @@ packages = ["src/principia_inferentiae"]
 [tool.pytest.ini_options]
 addopts = "-q"
 testpaths = ["tests"]
+pythonpath = ["tests"]
 
 [tool.ruff]
 target-version = "py311"

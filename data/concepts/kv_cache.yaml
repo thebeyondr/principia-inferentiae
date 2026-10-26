@@ -1,0 +1,103 @@
+- id: kv.bytes_per_token
+  label: Logical KV bytes per token
+  domain: kv_cache
+  subdomain: kv.formula
+  grading_type: numeric_units
+  prerequisites: [units.bytes_prefixes, model.params_bytes]
+  key_prerequisites: [model.params_bytes]
+  encompasses: []
+  interference_group: kv_vs_weights
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/kv-cache.md#theory
+- id: kv.mha_gqa_mqa
+  label: MHA, GQA, and MQA
+  domain: kv_cache
+  subdomain: kv.attention
+  grading_type: classify
+  prerequisites: [kv.bytes_per_token]
+  key_prerequisites: [kv.bytes_per_token]
+  encompasses: []
+  interference_group: attention_variants
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/kv-cache.md#theory
+- id: kv.tp_pp_split
+  label: Tensor and pipeline KV split
+  domain: kv_cache
+  subdomain: kv.parallel
+  grading_type: numeric_units
+  prerequisites: [kv.mha_gqa_mqa, model.weight_shards_tp]
+  key_prerequisites: [model.weight_shards_tp]
+  encompasses: []
+  interference_group: kv_sharding
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/kv-cache.md#theory
+- id: kv.shard_layers_replicate
+  label: shard_layers replicates KV heads
+  domain: kv_cache
+  subdomain: kv.parallel
+  grading_type: choice
+  prerequisites: [kv.tp_pp_split]
+  key_prerequisites: [kv.tp_pp_split]
+  encompasses: []
+  interference_group: kv_sharding
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/kv-cache.md#theory
+- id: kv.active_tokens
+  label: Configured active tokens
+  domain: kv_cache
+  subdomain: kv.capacity
+  grading_type: numeric_units
+  prerequisites: [kv.bytes_per_token]
+  key_prerequisites: [kv.bytes_per_token]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/kv-cache.md#theory
+- id: kv.per_rank_fit
+  label: Per-rank bytes including reserve
+  domain: kv_cache
+  subdomain: kv.capacity
+  grading_type: numeric_units
+  prerequisites: [kv.active_tokens, kv.shard_layers_replicate, model.per_rank_weight_bytes]
+  key_prerequisites: [model.per_rank_weight_bytes]
+  encompasses: [kv.bytes_per_token, kv.active_tokens]
+  interference_group: capacity_vs_bandwidth
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/kv-cache.md#theory
+- id: kv.rank_oom
+  label: Aggregate fit can hide a rank OOM
+  domain: kv_cache
+  subdomain: kv.capacity
+  grading_type: classify
+  prerequisites: [kv.per_rank_fit]
+  key_prerequisites: [kv.per_rank_fit]
+  encompasses: [kv.per_rank_fit]
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/kv-cache.md#theory

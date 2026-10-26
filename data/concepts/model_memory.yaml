@@ -1,0 +1,67 @@
+- id: model.params_bytes
+  label: Parameter payload bytes
+  domain: model_memory
+  subdomain: model.weights
+  grading_type: numeric_units
+  prerequisites: [units.bytes_prefixes]
+  key_prerequisites: [units.bytes_prefixes]
+  encompasses: []
+  interference_group: kv_vs_weights
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/memory-hierarchy.md#theory
+- id: model.quant_metadata
+  label: Quantization metadata bytes
+  domain: model_memory
+  subdomain: model.quant
+  grading_type: numeric_units
+  prerequisites: [model.params_bytes]
+  key_prerequisites: [model.params_bytes]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/memory-hierarchy.md#theory
+- id: model.group_size_overhead
+  label: Group-size metadata overhead
+  domain: model_memory
+  subdomain: model.quant
+  grading_type: numeric_units
+  prerequisites: [model.quant_metadata]
+  key_prerequisites: [model.quant_metadata]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/memory-hierarchy.md#theory
+- id: model.weight_shards_tp
+  label: Weight shard count
+  domain: model_memory
+  subdomain: model.sharding
+  grading_type: numeric_units
+  prerequisites: [model.params_bytes]
+  key_prerequisites: [model.params_bytes]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/memory-hierarchy.md#theory
+- id: model.per_rank_weight_bytes
+  label: Per-rank weight bytes
+  domain: model_memory
+  subdomain: model.sharding
+  grading_type: numeric_units
+  prerequisites: [model.weight_shards_tp, model.quant_metadata]
+  key_prerequisites: [model.quant_metadata]
+  encompasses: []
+  interference_group: kv_vs_weights
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/memory-hierarchy.md#theory

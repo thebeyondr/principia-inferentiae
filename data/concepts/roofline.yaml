@@ -1,0 +1,71 @@
+- id: roofline.arithmetic_intensity
+  label: Arithmetic intensity
+  domain: roofline
+  subdomain: roofline.intensity
+  grading_type: numeric_units
+  prerequisites: [units.tflops, units.gbps]
+  key_prerequisites: [units.gbps]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-decode-bandwidth
+  knowledge_page: knowledge/roofline-analysis.md#theory
+- id: roofline.ridge_point
+  label: Ridge point
+  domain: roofline
+  subdomain: roofline.intensity
+  grading_type: numeric_units
+  prerequisites: [roofline.arithmetic_intensity]
+  key_prerequisites: [roofline.arithmetic_intensity]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-decode-bandwidth
+  knowledge_page: knowledge/roofline-analysis.md#theory
+- id: roofline.classify
+  label: Compute, HBM, underfilled, or mixed
+  domain: roofline
+  subdomain: roofline.class
+  grading_type: classify
+  prerequisites: [roofline.ridge_point]
+  key_prerequisites: [roofline.ridge_point]
+  encompasses: [roofline.arithmetic_intensity, roofline.ridge_point]
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-decode-bandwidth
+  knowledge_page: knowledge/roofline-analysis.md#theory
+- id: roofline.capacity_vs_bandwidth
+  label: Capacity is not bandwidth
+  domain: roofline
+  subdomain: roofline.capacity
+  grading_type: choice
+  prerequisites: [roofline.classify, kv.per_rank_fit]
+  key_prerequisites: [kv.per_rank_fit]
+  encompasses: []
+  interference_group: capacity_vs_bandwidth
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-decode-bandwidth
+  knowledge_page: knowledge/roofline-analysis.md#theory
+- id: roofline.utilization_not_saturation
+  label: Utilization is not saturation
+  domain: roofline
+  subdomain: roofline.class
+  grading_type: classify
+  prerequisites: [roofline.classify]
+  key_prerequisites: [roofline.classify]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-decode-bandwidth
+  knowledge_page: knowledge/roofline-analysis.md#theory

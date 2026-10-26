@@ -1,0 +1,208 @@
+- id: policy.admission
+  label: Admission cap
+  domain: policy
+  subdomain: policy.gate
+  grading_type: intervene
+  prerequisites: [kv.rank_oom, metrics.goodput]
+  key_prerequisites: [metrics.goodput]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-continuous-batching
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.queue
+  label: Queue versus inference TTFT
+  domain: policy
+  subdomain: policy.gate
+  grading_type: intervene
+  prerequisites: [phases.ttft_queue_prefill, metrics.inference_vs_e2e]
+  key_prerequisites: [metrics.inference_vs_e2e]
+  encompasses: []
+  interference_group: inference_vs_e2e
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-runtime-metrics
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.chunked_prefill
+  label: Chunked prefill repair
+  domain: policy
+  subdomain: policy.batching
+  grading_type: intervene
+  prerequisites: [phases.chunked_prefill]
+  key_prerequisites: [phases.chunked_prefill]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-continuous-batching
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.retry_storm
+  label: Retry storm
+  domain: policy
+  subdomain: policy.gate
+  grading_type: intervene
+  prerequisites: [policy.admission]
+  key_prerequisites: [policy.admission]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-failure-recovery
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.goodput
+  label: Goodput versus aggregate tokens per second
+  domain: policy
+  subdomain: policy.batching
+  grading_type: intervene
+  prerequisites: [metrics.goodput, metrics.per_user_vs_aggregate]
+  key_prerequisites: [metrics.per_user_vs_aggregate]
+  encompasses: [metrics.goodput]
+  interference_group: goodput_vs_throughput
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-runtime-metrics
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.prefix
+  label: Prefix cache reuse
+  domain: policy
+  subdomain: policy.cache
+  grading_type: intervene
+  prerequisites: [workload.prefix_reuse, phases.prefill_ms]
+  key_prerequisites: [phases.prefill_ms]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.priority
+  label: Interactive versus batch priority
+  domain: policy
+  subdomain: policy.fairness
+  grading_type: intervene
+  prerequisites: [phases.itl_vs_tpot, workload.tenant_mix]
+  key_prerequisites: [workload.tenant_mix]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-continuous-batching
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.sticky
+  label: Cache-aware routing
+  domain: policy
+  subdomain: policy.cache
+  grading_type: intervene
+  prerequisites: [policy.prefix]
+  key_prerequisites: [policy.prefix]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.hog
+  label: Output cap on a long job
+  domain: policy
+  subdomain: policy.fairness
+  grading_type: intervene
+  prerequisites: [policy.priority, workload.prompt_vs_output]
+  key_prerequisites: [workload.prompt_vs_output]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.frag
+  label: Paged KV versus free bytes
+  domain: policy
+  subdomain: policy.capacity
+  grading_type: intervene
+  prerequisites: [kv.rank_oom]
+  key_prerequisites: [kv.rank_oom]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.spec
+  label: Speculative decode acceptance
+  domain: policy
+  subdomain: policy.batching
+  grading_type: intervene
+  prerequisites: [phases.decode_gap]
+  key_prerequisites: [phases.decode_gap]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.evict
+  label: Prefix cache working set
+  domain: policy
+  subdomain: policy.cache
+  grading_type: intervene
+  prerequisites: [policy.prefix, kv.active_tokens]
+  key_prerequisites: [kv.active_tokens]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-kv-prefix
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.lora
+  label: LoRA adapter batching
+  domain: policy
+  subdomain: policy.batching
+  grading_type: intervene
+  prerequisites: [phases.ttft_queue_prefill]
+  key_prerequisites: [phases.ttft_queue_prefill]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.scale
+  label: Pre-warm versus reactive scale
+  domain: policy
+  subdomain: policy.capacity
+  grading_type: intervene
+  prerequisites: [workload.burst_vs_steady, sizing.null_gpu_count]
+  key_prerequisites: [sizing.null_gpu_count]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-load-generation
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: policy.batch
+  label: Continuous versus static batching
+  domain: policy
+  subdomain: policy.batching
+  grading_type: intervene
+  prerequisites: [phases.chunked_prefill, policy.queue]
+  key_prerequisites: [policy.queue]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-continuous-batching
+  knowledge_page: knowledge/request-lifecycle.md#theory

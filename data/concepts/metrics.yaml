@@ -1,0 +1,104 @@
+- id: metrics.boundaries
+  label: TTFT, ITL, TPOT, and E2E boundaries
+  domain: metrics
+  subdomain: metrics.clocks
+  grading_type: choice
+  prerequisites: [phases.ttft_queue_prefill, phases.itl_vs_tpot]
+  key_prerequisites: [phases.itl_vs_tpot]
+  encompasses: []
+  interference_group: ttft_vs_itl
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-runtime-metrics
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units
+- id: metrics.per_user_vs_aggregate
+  label: Per-user versus aggregate tokens per second
+  domain: metrics
+  subdomain: metrics.population
+  grading_type: choice
+  prerequisites: [metrics.boundaries, units.tokens_per_s_inversion]
+  key_prerequisites: [units.tokens_per_s_inversion]
+  encompasses: []
+  interference_group: user_vs_aggregate
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-runtime-metrics
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units
+- id: metrics.nearest_rank_percentile
+  label: Nearest-rank percentile
+  domain: metrics
+  subdomain: metrics.tails
+  grading_type: numeric_units
+  prerequisites: [units.bytes_prefixes]
+  key_prerequisites: [units.bytes_prefixes]
+  encompasses: []
+  interference_group: median_vs_tail
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-runtime-metrics
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units
+- id: metrics.p50_vs_p99
+  label: Median versus tail
+  domain: metrics
+  subdomain: metrics.tails
+  grading_type: choice
+  prerequisites: [metrics.nearest_rank_percentile]
+  key_prerequisites: [metrics.nearest_rank_percentile]
+  encompasses: [metrics.nearest_rank_percentile]
+  interference_group: median_vs_tail
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-runtime-metrics
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units
+- id: metrics.goodput
+  label: SLO goodput
+  domain: metrics
+  subdomain: metrics.slo
+  grading_type: numeric_units
+  prerequisites: [metrics.boundaries]
+  key_prerequisites: [metrics.boundaries]
+  encompasses: [metrics.boundaries]
+  interference_group: goodput_vs_throughput
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-runtime-metrics
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units
+- id: metrics.inference_vs_e2e
+  label: Inference-only versus end-to-end
+  domain: metrics
+  subdomain: metrics.clocks
+  grading_type: classify
+  prerequisites: [metrics.boundaries, phases.ttft_queue_prefill]
+  key_prerequisites: [phases.ttft_queue_prefill]
+  encompasses: []
+  interference_group: inference_vs_e2e
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-runtime-metrics
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units
+- id: metrics.littles_law
+  label: "Little's law"
+  domain: metrics
+  subdomain: metrics.population
+  grading_type: formula
+  prerequisites: [metrics.per_user_vs_aggregate, workload.burst_vs_steady]
+  key_prerequisites: [workload.burst_vs_steady]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-runtime-metrics
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units

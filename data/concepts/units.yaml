@@ -1,0 +1,69 @@
+- id: units.bytes_prefixes
+  label: Binary and decimal byte prefixes
+  domain: units
+  subdomain: units.prefixes
+  grading_type: numeric_units
+  prerequisites: []
+  key_prerequisites: []
+  encompasses: []
+  interference_group: kv_vs_weights
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: 30
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units
+- id: units.us_ms_s
+  label: Microseconds, milliseconds, and seconds
+  domain: units
+  subdomain: units.time
+  grading_type: numeric_units
+  prerequisites: []
+  key_prerequisites: []
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: 30
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units
+- id: units.tflops
+  label: TFLOP/s from FLOPs and time
+  domain: units
+  subdomain: units.rates
+  grading_type: numeric_units
+  prerequisites: [units.us_ms_s]
+  key_prerequisites: [units.us_ms_s]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: 30
+  ledger_evidence_id: e-decode-bandwidth
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units
+- id: units.gbps
+  label: Decimal GB/s from bytes and time
+  domain: units
+  subdomain: units.rates
+  grading_type: numeric_units
+  prerequisites: [units.bytes_prefixes, units.us_ms_s]
+  key_prerequisites: [units.us_ms_s]
+  encompasses: []
+  interference_group: capacity_vs_bandwidth
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: 30
+  ledger_evidence_id: e-decode-bandwidth
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units
+- id: units.tokens_per_s_inversion
+  label: Tokens per second versus milliseconds per token
+  domain: units
+  subdomain: units.time
+  grading_type: numeric_units
+  prerequisites: [units.us_ms_s]
+  key_prerequisites: [units.us_ms_s]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: 30
+  knowledge_page: knowledge/serving-metrics.md#theory-and-units

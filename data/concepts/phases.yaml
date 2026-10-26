@@ -1,0 +1,86 @@
+- id: phases.prefill_ms
+  label: Prefill milliseconds
+  domain: phases
+  subdomain: phases.prefill
+  grading_type: numeric_units
+  prerequisites: [units.us_ms_s, units.tokens_per_s_inversion]
+  key_prerequisites: [units.tokens_per_s_inversion]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-continuous-batching
+  knowledge_page: knowledge/prefill-decode.md#theory
+- id: phases.decode_gap
+  label: Decode inter-token gap
+  domain: phases
+  subdomain: phases.decode
+  grading_type: numeric_units
+  prerequisites: [phases.prefill_ms]
+  key_prerequisites: [phases.prefill_ms]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-decode-bandwidth
+  knowledge_page: knowledge/prefill-decode.md#theory
+- id: phases.ttft_queue_prefill
+  label: TTFT is queue plus prefill
+  domain: phases
+  subdomain: phases.prefill
+  grading_type: numeric_units
+  prerequisites: [phases.prefill_ms]
+  key_prerequisites: [phases.prefill_ms]
+  encompasses: []
+  interference_group: ttft_vs_itl
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-continuous-batching
+  knowledge_page: knowledge/prefill-decode.md#theory
+- id: phases.itl_vs_tpot
+  label: ITL versus TPOT
+  domain: phases
+  subdomain: phases.decode
+  grading_type: choice
+  prerequisites: [phases.decode_gap]
+  key_prerequisites: [phases.decode_gap]
+  encompasses: []
+  interference_group: ttft_vs_itl
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-continuous-batching
+  knowledge_page: knowledge/prefill-decode.md#theory
+- id: phases.chunked_prefill
+  label: Chunked prefill trade
+  domain: phases
+  subdomain: phases.schedule
+  grading_type: choice
+  prerequisites: [phases.ttft_queue_prefill, phases.itl_vs_tpot]
+  key_prerequisites: [phases.itl_vs_tpot]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-continuous-batching
+  knowledge_page: knowledge/prefill-decode.md#theory
+- id: phases.disaggregation
+  label: When to disaggregate prefill and decode
+  domain: phases
+  subdomain: phases.schedule
+  grading_type: choice
+  prerequisites: [phases.chunked_prefill]
+  key_prerequisites: [phases.chunked_prefill]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: e-continuous-batching
+  knowledge_page: knowledge/prefill-decode.md#theory

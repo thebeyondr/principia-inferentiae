@@ -1,0 +1,56 @@
+- id: diagnosis.hypothesis_rank
+  label: Hypothesis ranking
+  domain: diagnosis
+  subdomain: diagnosis.rank
+  grading_type: order
+  prerequisites: [metrics.p50_vs_p99, phases.itl_vs_tpot]
+  key_prerequisites: [phases.itl_vs_tpot]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-serving-observability
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: diagnosis.causal_gate
+  label: Causal gate
+  domain: diagnosis
+  subdomain: diagnosis.cause
+  grading_type: choice
+  prerequisites: [diagnosis.hypothesis_rank]
+  key_prerequisites: [diagnosis.hypothesis_rank]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-failure-recovery
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: diagnosis.correlation_vs_cause
+  label: Correlation versus root cause
+  domain: diagnosis
+  subdomain: diagnosis.cause
+  grading_type: choice
+  prerequisites: [diagnosis.causal_gate]
+  key_prerequisites: [diagnosis.causal_gate]
+  encompasses: [diagnosis.causal_gate]
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-failure-recovery
+  knowledge_page: knowledge/request-lifecycle.md#theory
+- id: diagnosis.missing_telemetry
+  label: Missing telemetry
+  domain: diagnosis
+  subdomain: diagnosis.telemetry
+  grading_type: choice
+  prerequisites: [diagnosis.correlation_vs_cause]
+  key_prerequisites: [diagnosis.correlation_vs_cause]
+  encompasses: []
+  mastery_threshold:
+    evidence_floor: 6
+    streak: 5
+    avg_time_seconds: null
+  ledger_evidence_id: j-serving-observability
+  knowledge_page: knowledge/request-lifecycle.md#theory

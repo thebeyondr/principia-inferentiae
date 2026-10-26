@@ -70,6 +70,30 @@ def _kv_bytes_per_token_per_rank(model: ModelSpec, config: ServingConfig) -> int
     return math.ceil(2 * layers * kv_heads * model.head_dim * model.kv_dtype_bytes)
 
 
+def parameter_bytes(parameter_count: int, model: ModelSpec) -> int:
+    """Public alias for payload bytes plus quantization metadata."""
+
+    return _parameter_bytes(parameter_count, model)
+
+
+def weight_shards(config: ServingConfig) -> int:
+    """Public alias for the weight-shard count of one replica."""
+
+    return _weight_shards(config)
+
+
+def kv_layout(model: ModelSpec, config: ServingConfig) -> tuple[int, int]:
+    """Public alias for ``(layers_per_rank, kv_heads_per_rank)``."""
+
+    return _kv_layout(model, config)
+
+
+def kv_bytes_per_token_per_rank(model: ModelSpec, config: ServingConfig) -> int:
+    """Public alias for per-rank KV bytes of one token."""
+
+    return _kv_bytes_per_token_per_rank(model, config)
+
+
 def estimate_memory(
     run: RunMetadata,
     model: ModelSpec,
